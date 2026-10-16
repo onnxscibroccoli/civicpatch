@@ -26,7 +26,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -43,6 +43,14 @@ jobs:
           python -m unittest discover -s tests -v
           python scripts/validate_ma_directory.py
           python scripts/report_ma_coverage.py
+      - name: Preserve generated candidate directory for recovery if PR permissions are blocked
+        uses: actions/upload-artifact@v4
+        with:
+          name: civicpatch-ma-directory-candidate
+          path: |
+            data/ma/municipalities.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Open or update review pull request
         uses: peter-evans/create-pull-request@v7
         with:
