@@ -97,11 +97,13 @@ def validate():
         elif town_id in seen_town_ids:
             errors.append(f"duplicate massgis_town_id: {town_id}")
         seen_town_ids.add(town_id)
-        if not isinstance(ocd_id, str) or not OCD_PATTERN.fullmatch(ocd_id):
-            errors.append(f"{prefix}.ocd_id has invalid format")
-        elif ocd_id in seen_ocd_ids:
-            errors.append(f"duplicate ocd_id: {ocd_id}")
-        seen_ocd_ids.add(ocd_id)
+        if ocd_id is not None:
+            if not isinstance(ocd_id, str) or not OCD_PATTERN.fullmatch(ocd_id):
+                errors.append(f"{prefix}.ocd_id has invalid format; use null until independently validated")
+            elif ocd_id in seen_ocd_ids:
+                errors.append(f"duplicate ocd_id: {ocd_id}")
+            else:
+                seen_ocd_ids.add(ocd_id)
         if not isinstance(record.get("name"), str) or not record.get("name", "").strip():
             errors.append(f"{prefix}.name must be a non-empty string")
         if record.get("record_status") not in STATUSES:
@@ -150,7 +152,7 @@ def validate():
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         return False
-    print(f"PASS: directory structure and invariants valid; records={len(records)}/351; verified={verified_count}/351; status={coverage['status']}")
+    print(f"PASS: directory structure and invariants valid; records={len(records)}/351; verified={verified_count}/351; OCD-ID populated={len(seen_ocd_ids)}/{len(records)}; status={coverage['status']}")
     print("NOTE: structural validation does not establish factual accuracy or source reachability.")
     return True
 
