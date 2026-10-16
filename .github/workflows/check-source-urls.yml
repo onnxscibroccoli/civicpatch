@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run URL health unit tests
-        run: python -m unittest tests/test_ma_ingestion.py -v
+        run: python -m unittest discover -s tests -v
       - name: Probe published source URLs
         run: python scripts/check_source_urls.py
       - name: Preserve URL health report
