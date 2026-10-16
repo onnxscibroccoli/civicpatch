@@ -13,7 +13,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.error import URLError, HTTPError
-from urllib.parse import urlencode, urlparse, urljoin
+from urllib.parse import quote, urlencode, urlparse, urljoin, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +32,28 @@ def fetch(url, timeout=35, max_bytes=1_500_000):
         if response.status < 200 or response.status >= 300:
             raise RuntimeError(f"HTTP {response.status} for {url}")
         return response.read(max_bytes + 1)[:max_bytes]
+
+
+
+def normalize_http_url(value):
+    """Trim a candidate URL and percent-encode whitespace in URL components.
+
+    Spaces in municipal PDF/document paths must be encoded as %20. Using
+    quote() on URL components preserves path separators and query delimiters.
+    """
+    value = (value or "").strip()
+    if not value:
+        return value
+    parts = urlsplit(value)
+    if parts.scheme.casefold() not in {"http", "https"} or not parts.netloc:
+        return value
+    path = quote(parts.path, safe="/%:@!
+def normalize(value):'()*+,;=-._~%")
+    query = quote(parts.query, safe="/?@!
+def normalize(value):'()*+,;=:%-._~")
+    fragment = quote(parts.fragment, safe="/?@!
+def normalize(value):'()*+,;=:%-._~")
+    return urlunsplit((parts.scheme, parts.netloc, path, query, fragment))
 
 
 def normalize(value):
@@ -75,6 +97,7 @@ def official_website_map():
             href = "https:" + href
         elif href.startswith("/"):
             href = "https://www.mass.gov" + href
+        href = normalize_http_url(href)
         parsed = urlparse(href)
         if parsed.scheme not in ("http", "https") or not parsed.netloc:
             continue
@@ -135,7 +158,7 @@ def crawl_service_candidates(record, today):
         departments = classify_department(label)
         if not departments or not href:
             continue
-        target = urljoin(homepage, href)
+        target = normalize_http_url(urljoin(homepage, href))
         parsed = urlparse(target)
         host = (parsed.hostname or "").casefold()
         if parsed.scheme not in ("http", "https") or not host:
