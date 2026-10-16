@@ -47,7 +47,12 @@ def normalize_http_url(value):
     parts = urlsplit(value)
     if parts.scheme.casefold() not in {"http", "https"} or not parts.netloc:
         return value
-    path = quote(parts.path, safe="/%:@!
+    path = quote(parts.path, safe="/%:@!$&()*+,;=-._~%")
+    query = quote(parts.query, safe="/?@!$&()*+,;=:%-._~")
+    fragment = quote(parts.fragment, safe="/?@!$&()*+,;=:%-._~")
+    return urlunsplit((parts.scheme, parts.netloc, path, query, fragment))
+
+
 def normalize(value):'()*+,;=-._~%")
     query = quote(parts.query, safe="/?@!
 def normalize(value):'()*+,;=:%-._~")
