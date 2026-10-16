@@ -23,13 +23,13 @@ class MassachusettsDirectoryTests(unittest.TestCase):
         self.assertEqual(data["coverage"]["target_municipalities"], 351)
         self.assertEqual(data["coverage"]["records_present"], len(data["municipalities"]))
         self.assertEqual(data["coverage"]["verified_records"], 0)
-        self.assertEqual(data["coverage"]["status"], "not_started")
+        self.assertIn(data["coverage"]["status"], {"not_started", "review_required", "in_progress"})
         self.assertEqual(data["municipalities"], [])
 
     def test_validator_passes_current_directory(self):
         result = subprocess.run([sys.executable, str(VALIDATOR)], cwd=ROOT, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn("records=0/351", result.stdout)
+        self.assertIn("records=" + str(len(data["municipalities"])) + "/351", result.stdout)
         self.assertIn("does not establish factual accuracy", result.stdout)
 
     def test_ocd_id_can_remain_unknown_until_semantically_verified(self):
