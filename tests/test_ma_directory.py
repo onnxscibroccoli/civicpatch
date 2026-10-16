@@ -32,6 +32,13 @@ class MassachusettsDirectoryTests(unittest.TestCase):
         self.assertIn("records=0/351", result.stdout)
         self.assertIn("does not establish factual accuracy", result.stdout)
 
+    def test_ocd_id_can_remain_unknown_until_semantically_verified(self):
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        ocd = schema["$defs"]["Municipality"]["properties"]["ocd_id"]
+        self.assertIn("null", ocd["type"])
+        self.assertIn("authoritative OCD-ID registry", ocd["description"])
+        self.assertIn("(place|cousub)", ocd["pattern"])
+
     def test_schema_has_provenance_and_separate_url_status(self):
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         source = schema["$defs"]["OfficialSource"]["properties"]
