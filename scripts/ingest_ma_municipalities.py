@@ -53,14 +53,6 @@ def normalize_http_url(value):
     return urlunsplit((parts.scheme, parts.netloc, path, query, fragment))
 
 
-def normalize(value):'()*+,;=-._~%")
-    query = quote(parts.query, safe="/?@!
-def normalize(value):'()*+,;=:%-._~")
-    fragment = quote(parts.fragment, safe="/?@!
-def normalize(value):'()*+,;=:%-._~")
-    return urlunsplit((parts.scheme, parts.netloc, path, query, fragment))
-
-
 def normalize(value):
     return re.sub(r"[^a-z0-9]+", "", (value or "").casefold())
 
