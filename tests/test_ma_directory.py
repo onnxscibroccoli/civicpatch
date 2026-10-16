@@ -4,6 +4,9 @@ import sys
 import unittest
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from ingest_ma_municipalities import normalize_http_url
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "ma" / "municipalities.json"
 SCHEMA = ROOT / "schemas" / "ma-source-directory.schema.json"
@@ -38,6 +41,18 @@ class MassachusettsDirectoryTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("records=" + str(len(data["municipalities"])) + "/351", result.stdout)
         self.assertIn("does not establish factual accuracy", result.stdout)
+
+    def test_urls_encode_spaces_and_trim_surrounding_whitespace(self):
+        self.assertEqual(
+            normalize_http_url(" https://example.gov/Documents/Board of Health/Annual report.pdf?title=town hall#minutes "),
+            "https://example.gov/Documents/Board%20of%20Health/Annual%20report.pdf?title=town%20hall#minutes",
+        )
+
+    def test_existing_percent_encoding_is_preserved(self):
+        self.assertEqual(
+            normalize_http_url("https://example.gov/Board%20of%20Health/report.pdf?download=1"),
+            "https://example.gov/Board%20of%20Health/report.pdf?download=1",
+        )
 
     def test_ocd_id_can_remain_unknown_until_semantically_verified(self):
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
