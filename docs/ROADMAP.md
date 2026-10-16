@@ -9,17 +9,17 @@ This roadmap separates product goals from verified capabilities. An item is not 
 - [x] Static landing page with an in-browser next-step guide and external official-source searches.
 - [x] Explicitly label the current guide as early-stage and not statewide verified.
 - [ ] Confirm GitHub Pages settings and a successful deployment from the Actions run history.
-- [ ] Add automated HTML, JavaScript, accessibility, and link checks.
+- [x] Add automated HTML smoke tests and a scheduled URL-reachability report workflow (the report checks only URLs currently present in the directory; it is not an accessibility audit or JavaScript syntax test).
 
 ## Stage 1: Massachusetts minimum useful product
 
-- [ ] Build a versioned, machine-readable registry of all 351 cities and towns.
+- [x] Define the versioned machine-readable registry schema and a MassGIS ingestion workflow for all 351 cities and towns.\n- [ ] Merge and review the generated 351-municipality baseline; current main-branch data is not counted as populated until the ingestion PR is merged.
 - [ ] Include official municipal website, relevant official contacts, source URL, source type, verification date, reviewer, and confidence/status fields.
 - [ ] Establish a documented state and local jurisdiction model, including regional authorities and municipalities without county-level service structures.
 - [ ] Add source review and correction workflows.
-- [ ] Add a coverage dashboard showing verified, partial, stale, and unknown records.
+- [x] Connect a static coverage dashboard and municipality provenance display to the versioned JSON file.\n- [ ] Populate the canonical file and expand the dashboard to sector-level verified, incomplete, stale, broken, and unverified totals.
 - [ ] Build reliable issue-category guidance that distinguishes a suggestion from a verified responsible agency.
-- [ ] Add automated tests for data schema, link health, source provenance, and routing.
+- [x] Add automated tests for core data invariants, provenance fields, coverage calculations, URL-check guardrails, and site-to-directory integration.\n- [ ] Add end-to-end jurisdiction-routing tests and semantic OCD-ID registry validation.
 - [ ] Test with users across urban, suburban, and rural communities and with assistive technologies.
 - [ ] Publish privacy, retention, moderation, and security policies before accepting public submissions.
 
