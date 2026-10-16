@@ -11,8 +11,9 @@ import sys
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.error import URLError, HTTPError
-from urllib.parse import urlencode, urlparse
+from urllib.parse import urlencode, urlparse, urljoin
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,12 +26,12 @@ USER_AGENT = "CivicPatch-Municipality-Directory/1.0 (open civic data; repository
 EXPECTED = 351
 
 
-def fetch(url, timeout=35):
+def fetch(url, timeout=35, max_bytes=1_500_000):
     request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json,text/html,*/*"})
     with urlopen(request, timeout=timeout) as response:
         if response.status < 200 or response.status >= 300:
             raise RuntimeError(f"HTTP {response.status} for {url}")
-        return response.read()
+        return response.read(max_bytes + 1)[:max_bytes]
 
 
 def normalize(value):
@@ -82,6 +83,108 @@ def official_website_map():
         mapping.setdefault(key, href)
     return mapping
 
+
+
+DEPARTMENT_KEYWORDS = {
+    "public_works": ("public works", "dpw", "department of public works", "highway department", "street department", "roads and streets", "sanitation", "recycling", "trash collection", "water department", "sewer department"),
+    "building_zoning": ("building department", "building inspector", "inspectional services", "building permits", "permitting", "zoning", "code enforcement", "building inspections"),
+    "health": ("board of health", "health department", "public health", "health services"),
+    "conservation": ("conservation commission", "conservation department", "conservation"),
+    "clerk": ("town clerk", "city clerk", "municipal clerk", "clerk's office", "clerk office"),
+    "elections": ("elections", "election department", "voter registration", "registrar of voters", "voting"),
+    "executive": ("select board", "selectboard", "board of selectmen", "mayor", "city council", "town manager", "town administrator", "city manager", "town government", "city government"),
+    "planning": ("planning board", "planning department", "planning and development")
+}
+ISSUE_CATEGORIES = {
+    "public_works": ["roads", "sidewalks", "public_works", "trash_recycling", "water_sewer"],
+    "building_zoning": ["building_permits", "zoning", "code_enforcement"],
+    "health": ["public_health"],
+    "conservation": ["conservation", "wetlands"],
+    "clerk": ["municipal_records", "licenses"],
+    "elections": ["elections", "voter_registration"],
+    "executive": ["municipal_governance"],
+    "planning": ["planning_and_development"]
+}
+
+
+def classify_department(label):
+    normalized = re.sub(r"[^a-z0-9 ]+", " ", (label or "").casefold())
+    normalized = re.sub(r"\\s+", " ", normalized).strip()
+    if not normalized:
+        return []
+    return [department for department, keywords in DEPARTMENT_KEYWORDS.items()
+            if any(keyword in normalized for keyword in keywords)]
+
+
+def crawl_service_candidates(record, today):
+    """Collect homepage navigation candidates only; never mark a department verified."""
+    homepage = record.get("official_website")
+    if not homepage:
+        return []
+    try:
+        html = fetch(homepage, timeout=8, max_bytes=1_500_000).decode("utf-8", errors="replace")
+        parser = AnchorParser()
+        parser.feed(html)
+    except Exception as exc:
+        print(f"INFO: homepage candidate scrape skipped for {record['name']}: {str(exc)[:160]}", file=sys.stderr)
+        return []
+    base_host = (urlparse(homepage).hostname or "").casefold()
+    candidates = []
+    seen = set()
+    for label, href in parser.anchors:
+        departments = classify_department(label)
+        if not departments or not href:
+            continue
+        target = urljoin(homepage, href)
+        parsed = urlparse(target)
+        host = (parsed.hostname or "").casefold()
+        if parsed.scheme not in ("http", "https") or not host:
+            continue
+        if host != base_host and not host.endswith("." + base_host):
+            continue
+        for department in departments:
+            key = (department, target.rstrip("/"))
+            if key in seen:
+                continue
+            seen.add(key)
+            safe_label = re.sub(r"\\s+", " ", label).strip()[:160] or department.replace("_", " ").title()
+            source_id = record["municipality_id"] + "-" + department.replace("_", "-") + "-" + str(len(candidates) + 1)
+            candidates.append({
+                "source_id": source_id,
+                "name": safe_label,
+                "department_type": department,
+                "canonical_url": target,
+                "supported_issue_categories": ISSUE_CATEGORIES[department],
+                "verification_status": "unverified",
+                "url_status": "not_checked",
+                "last_content_reviewed_at": None,
+                "evidence": [{
+                    "source_type": "official_website",
+                    "reference_url": homepage,
+                    "checked_at": today,
+                    "checked_by": "CivicPatch automated ingestion",
+                    "claim_supported": f"The candidate homepage navigation for {record['name']} contains the link label '{safe_label}' pointing to {target}. This is a discovery lead only, not proof of departmental authority.",
+                    "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
+                }],
+                "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
+            })
+    return candidates
+
+
+def enrich_service_candidates(records, today):
+    total = 0
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futures = {pool.submit(crawl_service_candidates, record, today): record for record in records if record.get("official_website")}
+        for future in as_completed(futures):
+            record = futures[future]
+            try:
+                candidates = future.result()
+            except Exception as exc:
+                print(f"INFO: candidate scrape skipped for {record['name']}: {str(exc)[:160]}", file=sys.stderr)
+                continue
+            record["official_sources"] = candidates
+            total += len(candidates)
+    return total
 
 def fetch_massgis_records():
     query = urlencode({
@@ -150,6 +253,8 @@ def fetch_massgis_records():
         missing = sorted(set(range(1, EXPECTED + 1)) - seen_ids)
         raise RuntimeError(f"MassGIS TOWN_ID sequence is incomplete; missing {missing[:20]}")
     records.sort(key=lambda item: item["massgis_town_id"])
+    candidate_count = enrich_service_candidates(records, today)
+    print(f"Discovered {candidate_count} unverified homepage navigation candidates across service sectors.", file=sys.stderr)
     return records, today
 
 
