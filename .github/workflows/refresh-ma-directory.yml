@@ -1,4 +1,4 @@
-name: Refresh Massachusetts municipality baseline
+name: Refresh Massachusetts municipality baseline and validate candidate data
 
 on:
   push:
