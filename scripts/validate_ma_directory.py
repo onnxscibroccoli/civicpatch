@@ -18,7 +18,7 @@ STATUSES = {"verified", "incomplete", "stale", "unverified"}
 SOURCE_STATUSES = STATUSES | {"broken"}
 URL_STATUSES = {"not_checked", "reachable", "redirected", "broken", "manual_review"}
 DEPARTMENT_TYPES = {"executive", "clerk", "public_works", "health", "conservation", "building_zoning", "finance", "public_safety", "planning", "elections", "other"}
-OCD_PATTERN = re.compile(r"^ocd-division/country:us/state:ma/place:[a-z0-9_]+$")
+OCD_PATTERN = re.compile(r"^ocd-division/country:us/state:ma/(?:place|cousub):[a-z0-9_]+$")
 ID_PATTERN = re.compile(r"^ma-[a-z0-9-]+$")
 
 
