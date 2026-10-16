@@ -20,8 +20,9 @@
 <div class="field"><label for="topic">What kind of issue is it?</label><select id="topic" name="topic"><option value="services">Local services or public works</option><option value="housing">Housing, buildings, or code enforcement</option><option value="transport">Roads, sidewalks, or transportation</option><option value="environment">Environment, water, or public health</option><option value="meetings">Public meetings, policy, or local decisions</option><option value="records">Public records or transparency</option><option value="elections">Elections and voting information</option><option value="other">Something else</option></select></div>
 <div class="field full"><label for="issue">What would you like to understand or change? (optional)</label><textarea id="issue" name="issue" maxlength="1000" placeholder="Keep it general. Do not include names, addresses, phone numbers, or other private information."></textarea></div>
 </div><div class="actions"><button type="submit">Build my next-step guide</button><a class="button alt" href="https://www.mass.gov/" rel="noopener noreferrer">Visit Mass.gov</a></div></form>
-<div class="results" id="results" aria-live="polite" hidden><h3>Your starting checklist</h3><p id="summary"></p><ol class="resultlist" id="steps"></ol><h3>Search official sources</h3><ul class="resultlist" id="links"></ul><p class="notice"><strong>Important:</strong> Search results are starting points, not verified recommendations or legal advice. Confirm the responsible agency, deadlines, eligibility, and current process on an official source. For immediate danger, contact local emergency services.</p><p class="small">Your location and description are not uploaded by this page. When you choose an external search link, that provider receives the query under its own privacy policy.</p></div>
+<div class="results" id="results" aria-live="polite" hidden><h3>Your starting checklist</h3><p id="summary"></p><div id="municipal-directory-match" class="card" hidden></div><ol class="resultlist" id="steps"></ol><h3>Search official sources</h3><ul class="resultlist" id="links"></ul><p class="notice"><strong>Important:</strong> Search results are starting points, not verified recommendations or legal advice. Confirm the responsible agency, deadlines, eligibility, and current process on an official source. For immediate danger, contact local emergency services.</p><p class="small">Your location and description are not uploaded by this page. When you choose an external search link, that provider receives the query under its own privacy policy.</p></div>
 </div></div></section>
+<section class="section" id="directory"><div class="wrap"><h2>Massachusetts directory coverage</h2><p class="intro">CivicPatch is building a source-backed directory for all 351 Massachusetts municipalities. Registry identity, website availability, and factual verification are tracked separately.</p><div class="grid" id="coverage-metrics" aria-live="polite"><article class="card"><h3>Municipalities indexed</h3><p id="metric-municipalities">Loading directory…</p></article><article class="card"><h3>Records verified</h3><p id="metric-verified">Loading directory…</p></article><article class="card"><h3>Official website candidates</h3><p id="metric-websites">Loading directory…</p></article></div><p id="directory-status" class="notice">Coverage is loaded from the versioned public directory. An indexed record is not a verified service recommendation.</p><p class="small">The directory is a static public data file. CivicPatch does not receive your location or issue description. OCD-IDs and municipal department responsibility remain unverified until supported by authoritative evidence.</p></div></section>
 <section class="section" id="how"><div class="wrap"><h2>Built for useful action, not noise</h2><div class="grid"><article class="card"><h3>01 · Find the source</h3><p>Start with public agencies and primary documents instead of unsourced claims or rumor.</p></article><article class="card"><h3>02 · Understand your options</h3><p>Learn which channels may fit: service requests, public comments, meetings, records requests, or constituent contact.</p></article><article class="card"><h3>03 · Make the project better</h3><p>Help verify local information, improve accessibility, add tests, and document what is and is not supported.</p></article></div></div></section>
 <section class="section" id="principles"><div class="wrap"><h2>Trust is a feature</h2><div class="grid"><article class="card"><h3>Honest about limits</h3><p>Suggestions are not official determinations. Coverage and source freshness must be explicit.</p></article><article class="card"><h3>Privacy first</h3><p>Do not publish personal data or unverified allegations. The current guide builds links in your browser and has no submission backend.</p></article><article class="card"><h3>Open by design</h3><p>The code and project direction are public. Fork it, challenge it, or help build a better version.</p></article></div><p class="notice"><strong>Current status:</strong> This is an initial public concept and working static guide, not a fully verified Massachusetts-wide service. A complete municipality directory, validated jurisdiction routing, backend, and statewide coverage tests remain future work.</p></div></section>
 <section class="section"><div class="wrap"><h2>Help build the civic commons</h2><p class="intro">CivicPatch is MIT-licensed. Contributors of every skill level are welcome. A careful source correction or accessibility test is just as valuable as a code change.</p><div class="actions"><a class="button" href="https://github.com/onnxscibroccoli/civicpatch">Explore the repository</a><a class="button alt" href="https://github.com/onnxscibroccoli/civicpatch/blob/main/CONTRIBUTING.md">Read contribution guide</a><a class="button alt" href="https://github.com/onnxscibroccoli/civicpatch/blob/main/docs/ROADMAP.md">See roadmap</a></div></div></section>
@@ -40,8 +41,47 @@ elections:{label:"elections and voting information",terms:["site:sec.state.ma.us
 other:{label:"your civic question",terms:["site:mass.gov Massachusetts government services","official municipal government website"]}
 };
 function searchUrl(q){return "https://www.google.com/search?q="+encodeURIComponent(q)}
+let municipalityDirectory=null;
+function normalizedName(value){return (value||"").toLocaleLowerCase("en-US").replace(/,.*$/,"").replace(/\\b(massachusetts|ma)\\b/gi,"").replace(/[^a-z0-9]/g,"")}
+function setText(id,value){const node=document.getElementById(id);if(node)node.textContent=value}
+async function loadMunicipalityDirectory(){
+ try{
+  const response=await fetch("data/ma/municipalities.json",{cache:"no-cache"});
+  if(!response.ok)throw new Error("Directory HTTP "+response.status);
+  const data=await response.json();municipalityDirectory=data;
+  const records=Array.isArray(data.municipalities)?data.municipalities:[];
+  const verified=records.filter(r=>r.record_status==="verified").length;
+  const websites=records.filter(r=>Boolean(r.official_website)).length;
+  setText("metric-municipalities",records.length+" / "+(data.coverage?.target_municipalities||351));
+  setText("metric-verified",verified+" verified");
+  setText("metric-websites",websites+" candidates");
+  setText("directory-status","Coverage status: "+(data.coverage?.status||"unknown")+". Generated "+(data.coverage?.generated_at||"date unavailable")+". Service-sector coverage is not implied by municipality records.");
+ }catch(error){
+  setText("metric-municipalities","Directory unavailable");
+  setText("metric-verified","Not available");
+  setText("metric-websites","Not available");
+  setText("directory-status","The structured directory could not be loaded. Use the official-source searches below and report this issue if it persists.");
+ }
+}
+function renderMunicipalityMatch(rawLocation){
+ const box=document.getElementById("municipal-directory-match");box.replaceChildren();box.hidden=true;
+ if(!municipalityDirectory||!Array.isArray(municipalityDirectory.municipalities))return;
+ const key=normalizedName(rawLocation);if(!key)return;
+ const records=municipalityDirectory.municipalities;
+ let record=records.find(r=>normalizedName(r.name)===key);
+ if(!record)record=records.find(r=>key.startsWith(normalizedName(r.name))&&normalizedName(r.name).length>=4);
+ if(!record)return;
+ box.hidden=false;
+ const heading=document.createElement("h3");heading.textContent="Directory record: "+record.name;box.appendChild(heading);
+ const status=document.createElement("p");status.textContent="Record status: "+record.record_status+". MassGIS TOWN_ID: "+record.massgis_town_id+". OCD-ID: "+(record.ocd_id||"not yet validated")+". This is a municipality identity match, not a determination of service responsibility.";box.appendChild(status);
+ if(record.official_website){const p=document.createElement("p");const a=document.createElement("a");a.href=record.official_website;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Candidate official municipal website";p.appendChild(a);box.appendChild(p);}
+ const evidence=Array.isArray(record.evidence)?record.evidence:[];
+ if(evidence.length){const h=document.createElement("h4");h.textContent="Provenance";box.appendChild(h);const list=document.createElement("ul");list.className="resultlist";evidence.forEach(item=>{const li=document.createElement("li");li.textContent=(item.claim_supported||"Source record")+" Source: "+item.reference_url+" Checked: "+(item.checked_at||"unknown")+". "+(item.notes||"");list.appendChild(li)});box.appendChild(list);}
+ const note=document.createElement("p");note.className="small";note.textContent="No municipal department or service has been marked verified by this baseline. Confirm current contacts and responsibility with the linked authority.";box.appendChild(note);
+}
+loadMunicipalityDirectory();
 document.getElementById("civic-form").addEventListener("submit",function(e){
-e.preventDefault();const location=document.getElementById("location").value.trim();const topic=topics[document.getElementById("topic").value];if(!location)return;
+e.preventDefault();const location=document.getElementById("location").value.trim();const topic=topics[document.getElementById("topic").value];if(!location)return;renderMunicipalityMatch(location);
 document.getElementById("summary").textContent="For “"+topic.label+"” near "+location+", use these steps to confirm the correct channel.";
 const steps=["Look for an official city, town, or state agency page. Prefer government domains and check the page's date and contact information.","Confirm which jurisdiction is responsible. Some services are regional or state-run, and local structures differ across Massachusetts.","Write down the specific issue, relevant dates, and the outcome you are requesting. Keep private or sensitive information out of public posts.","Use the agency's published process. Save a copy of any message or reference number and follow up through the official channel."];
 const ol=document.getElementById("steps");ol.replaceChildren();steps.forEach(s=>{const li=document.createElement("li");li.textContent=s;ol.appendChild(li)});
