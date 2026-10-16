@@ -72,6 +72,10 @@ Add countries and regions only when localization, jurisdiction models, source qu
 - **Safety and moderation:** Do not enable harassment, threats, doxxing, voter intimidation, or publication of private personal information.
 - **No false official status:** CivicPatch is an independent community project, not a government service.
 
+## Published Massachusetts municipality candidate directory
+
+The public directory dataset is published with the static GitHub Pages site at https://onnxscibroccoli.github.io/civicpatch/data/ma/municipalities.json and refreshed through the [Massachusetts ingestion workflow](.github/workflows/refresh-ma-directory.yml). Its registry targets all 351 Massachusetts municipalities; candidate links and structural coverage are **not** evidence of verified municipal services. The Fall River 2026 amended committee PDF path uses `%20` for embedded spaces. See [URL health monitoring](docs/URL-HEALTH.md) for validation limits.
+
 ## What is ready today?
 
 The repository is the public home of the concept and its development. This project charter describes intended behavior and boundaries. It does **not** certify a production application, verified Massachusetts coverage, a functioning backend, a complete data pipeline, or a successful live deployment. Those claims require tests and observable evidence.
