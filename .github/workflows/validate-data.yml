@@ -1,0 +1,31 @@
+name: Validate CivicPatch data
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: civicpatch-data-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run website and data tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate Massachusetts directory invariants
+        run: python scripts/validate_ma_directory.py
