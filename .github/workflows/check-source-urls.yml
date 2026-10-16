@@ -1,0 +1,40 @@
+name: Check source URL reachability
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/ma/municipalities.json"
+      - "scripts/check_source_urls.py"
+      - ".github/workflows/check-source-urls.yml"
+  schedule:
+    - cron: "7 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: civicpatch-url-health
+  cancel-in-progress: true
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run URL health unit tests
+        run: python -m unittest tests/test_ma_ingestion.py -v
+      - name: Probe published source URLs
+        run: python scripts/check_source_urls.py
+      - name: Preserve URL health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: civicpatch-url-health
+          path: artifacts/url-health.json
+          if-no-files-found: error
+          retention-days: 30
