@@ -8,20 +8,22 @@ This roadmap separates product goals from verified capabilities. An item is not 
 - [x] MIT license and contribution guidance.
 - [x] Static landing page with an in-browser next-step guide and external official-source searches.
 - [x] Explicitly label the current guide as early-stage and not statewide verified.
-- [ ] Confirm GitHub Pages settings and a successful deployment from the Actions run history.
+- [x] Confirm GitHub Pages is configured for GitHub Actions and a successful deployment is recorded in Actions.
 - [x] Add automated HTML smoke tests and a scheduled URL-reachability report workflow (the report checks only URLs currently present in the directory; it is not an accessibility audit or JavaScript syntax test).
 
 ## Stage 1: Massachusetts minimum useful product
 
 - [x] Define the versioned machine-readable registry schema and a MassGIS ingestion workflow for all 351 cities and towns.
-- [ ] Merge and review the generated 351-municipality baseline; current main-branch data is not counted as populated until the ingestion PR is merged.
+- [x] Merge the 351-municipality candidate baseline with explicit incomplete/unverified labels. Human review of municipality links and service responsibility remains open.
 - [ ] Include official municipal website, relevant official contacts, source URL, source type, verification date, reviewer, and confidence/status fields.
 - [ ] Establish a documented state and local jurisdiction model, including regional authorities and municipalities without county-level service structures.
 - [ ] Add source review and correction workflows.
 - [x] Connect a static coverage dashboard and municipality provenance display to the versioned JSON file.
-- [ ] Populate the canonical file and expand the dashboard to sector-level verified, incomplete, stale, broken, and unverified totals.
+- [x] Populate the canonical file with 351 municipality records and candidate homepage/navigation sources; the UI reports municipality presence and verified counts.
+- [ ] Expand the dashboard to sector-level verified, incomplete, stale, broken, and unverified totals.
 - [ ] Build reliable issue-category guidance that distinguishes a suggestion from a verified responsible agency.
 - [x] Add automated tests for core data invariants, provenance fields, coverage calculations, URL-check guardrails, and site-to-directory integration.
+- [x] Add regression tests for URL-space encoding and preservation of existing percent encoding.
 - [ ] Add end-to-end jurisdiction-routing tests and semantic OCD-ID registry validation.
 - [ ] Test with users across urban, suburban, and rural communities and with assistive technologies.
 - [ ] Publish privacy, retention, moderation, and security policies before accepting public submissions.

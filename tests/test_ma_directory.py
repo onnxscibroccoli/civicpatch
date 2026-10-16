@@ -54,6 +54,22 @@ class MassachusettsDirectoryTests(unittest.TestCase):
             "https://example.gov/Board%20of%20Health/report.pdf?download=1",
         )
 
+    def test_directory_url_fields_have_no_raw_whitespace(self):
+        data = json.loads(DATA.read_text(encoding="utf-8"))
+        url_keys = {"official_website", "canonical_url", "reference_url"}
+
+        def inspect(value, path="$"):
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    if key in url_keys and isinstance(child, str) and child.startswith(("http://", "https://")):
+                        self.assertFalse(any(char.isspace() for char in child), f"{path}.{key} contains raw whitespace: {child}")
+                    inspect(child, f"{path}.{key}")
+            elif isinstance(value, list):
+                for index, child in enumerate(value):
+                    inspect(child, f"{path}[{index}]")
+
+        inspect(data)
+
     def test_ocd_id_can_remain_unknown_until_semantically_verified(self):
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         ocd = schema["$defs"]["Municipality"]["properties"]["ocd_id"]

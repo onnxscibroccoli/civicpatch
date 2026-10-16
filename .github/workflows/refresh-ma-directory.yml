@@ -9,7 +9,6 @@ on:
       - "scripts/validate_ma_directory.py"
       - "scripts/report_ma_coverage.py"
       - "schemas/ma-source-directory.schema.json"
-      - "data/ma/municipalities.json"
       - ".gitignore"
   schedule:
     - cron: "41 9 * * 1"
