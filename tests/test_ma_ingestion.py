@@ -19,6 +19,12 @@ class IngestionUnitTests(unittest.TestCase):
         parser.feed('<a href="https://example.gov/">Abington</a><a href="/about">About</a>')
         self.assertEqual(parser.anchors, [("Abington", "https://example.gov/"), ("About", "/about")])
 
+    def test_department_candidates_are_classified_but_not_verified(self):
+        self.assertIn("public_works", module.classify_department("Department of Public Works"))
+        self.assertIn("health", module.classify_department("Board of Health"))
+        self.assertIn("building_zoning", module.classify_department("Building Permits and Zoning"))
+        self.assertEqual(module.classify_department("Parks and Recreation"), [])
+
     def test_identifier_is_not_inferred(self):
         self.assertIn('"ocd_id": None', SCRIPT.read_text(encoding="utf-8"))
 
