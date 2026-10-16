@@ -6,6 +6,11 @@ on:
     paths:
       - ".github/workflows/refresh-ma-directory.yml"
       - "scripts/ingest_ma_municipalities.py"
+      - "scripts/validate_ma_directory.py"
+      - "scripts/report_ma_coverage.py"
+      - "schemas/ma-source-directory.schema.json"
+      - "tests/**"
+      - "data/ma/municipalities.json"
   schedule:
     - cron: "41 9 * * 1"
   workflow_dispatch:
