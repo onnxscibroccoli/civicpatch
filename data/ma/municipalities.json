@@ -1618,34 +1618,7 @@
           "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
         },
         {
-          "source_id": "ma-arlington-public-works-23",
-          "name": "Trash, Recycling Collected as Usual - Yard Waste Delays WM will collect on the regular schedule, but is experiencing delays in yard waste collection. Please lea",
-          "department_type": "public_works",
-          "canonical_url": "https://www.arlingtonma.gov/Home/Components/News/News/16359/16",
-          "supported_issue_categories": [
-            "roads",
-            "sidewalks",
-            "public_works",
-            "trash_recycling",
-            "water_sewer"
-          ],
-          "verification_status": "unverified",
-          "url_status": "not_checked",
-          "last_content_reviewed_at": null,
-          "evidence": [
-            {
-              "source_type": "official_website",
-              "reference_url": "https://www.arlingtonma.gov/",
-              "checked_at": "2026-10-16",
-              "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Arlington contains the link label 'Trash, Recycling Collected as Usual - Yard Waste Delays WM will collect on the regular schedule, but is experiencing delays in yard waste collection. Please lea' pointing to https://www.arlingtonma.gov/Home/Components/News/News/16359/16. This is a discovery lead only, not proof of departmental authority.",
-              "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
-            }
-          ],
-          "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
-        },
-        {
-          "source_id": "ma-arlington-executive-24",
+          "source_id": "ma-arlington-executive-23",
           "name": "Oct. 8 Town Hall Update In this Town Hall Update, Town Manager Jim Feeney discusses the $2M in Community One Stop for Growth grants, Veterans Honor Roll, the Oc",
           "department_type": "executive",
           "canonical_url": "https://www.arlingtonma.gov/Home/Components/News/News/15388/16",
@@ -1668,7 +1641,7 @@
           "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
         },
         {
-          "source_id": "ma-arlington-executive-25",
+          "source_id": "ma-arlington-executive-24",
           "name": "Town Launches Committee Interest Form Allows residents to express interest in serving on 10 committees appointed by Select Board, Town Manager.",
           "department_type": "executive",
           "canonical_url": "https://www.arlingtonma.gov/Home/Components/News/News/16362/16",
@@ -1691,7 +1664,7 @@
           "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
         },
         {
-          "source_id": "ma-arlington-building-zoning-26",
+          "source_id": "ma-arlington-building-zoning-25",
           "name": "November 5 Heights Business District Zoning Presentation Join the Heights Neighborhood Action Plan Implementation Committee and Planning Staff to hear a present",
           "department_type": "building_zoning",
           "canonical_url": "https://www.arlingtonma.gov/Home/Components/News/News/16334/16",
@@ -4866,34 +4839,7 @@
       "record_status": "incomplete",
       "official_sources": [
         {
-          "source_id": "ma-blackstone-public-works-1",
-          "name": "Trash & Recycling on REGULAR schedule week of October 12",
-          "department_type": "public_works",
-          "canonical_url": "https://www.townofblackstone.org/CivicAlerts.aspx?AID=247",
-          "supported_issue_categories": [
-            "roads",
-            "sidewalks",
-            "public_works",
-            "trash_recycling",
-            "water_sewer"
-          ],
-          "verification_status": "unverified",
-          "url_status": "not_checked",
-          "last_content_reviewed_at": null,
-          "evidence": [
-            {
-              "source_type": "official_website",
-              "reference_url": "https://www.townofblackstone.org/",
-              "checked_at": "2026-10-16",
-              "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Blackstone contains the link label 'Trash & Recycling on REGULAR schedule week of October 12' pointing to https://www.townofblackstone.org/CivicAlerts.aspx?AID=247. This is a discovery lead only, not proof of departmental authority.",
-              "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
-            }
-          ],
-          "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
-        },
-        {
-          "source_id": "ma-blackstone-health-2",
+          "source_id": "ma-blackstone-health-1",
           "name": "Board of Health Hazardous Drop Off Day",
           "department_type": "health",
           "canonical_url": "https://www.townofblackstone.org/CivicAlerts.aspx?AID=246",
@@ -4916,7 +4862,7 @@
           "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
         },
         {
-          "source_id": "ma-blackstone-elections-3",
+          "source_id": "ma-blackstone-elections-2",
           "name": "In-Person Early Voting for State Election (November 3, 2026)",
           "department_type": "elections",
           "canonical_url": "https://www.townofblackstone.org/Calendar.aspx?EID=1903",
@@ -4940,7 +4886,7 @@
           "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
         },
         {
-          "source_id": "ma-blackstone-elections-4",
+          "source_id": "ma-blackstone-elections-3",
           "name": "In-Person Early Voting for State Election (November 3, 2026)",
           "department_type": "elections",
           "canonical_url": "https://www.townofblackstone.org/Calendar.aspx?EID=1904",
@@ -4964,7 +4910,7 @@
           "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
         },
         {
-          "source_id": "ma-blackstone-elections-5",
+          "source_id": "ma-blackstone-elections-4",
           "name": "In-Person Early Voting for State Election (November 3, 2026)",
           "department_type": "elections",
           "canonical_url": "https://www.townofblackstone.org/Calendar.aspx?EID=1905",
@@ -6704,7 +6650,7 @@
               "reference_url": "https://www.boylston-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Boylston contains the link label 'Select Board Statement Regarding Flock Safety and ALPR Technology' pointing to https://www.boylston-ma.gov/Documents/Community/Government/Board of Selectman/ALPR Technology/SB - Flock Safety and ALPR Technology Letter 09.10.26.pdf?t=202609111117580. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Boylston contains the link label 'Select Board Statement Regarding Flock Safety and ALPR Technology' pointing to https://www.boylston-ma.gov/Documents/Community/Government/Board%20of%20Selectman/ALPR%20Technology/SB%20-%20Flock%20Safety%20and%20ALPR%20Technology%20Letter%2009.10.26.pdf?t=202609111117580. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -6727,7 +6673,7 @@
               "reference_url": "https://www.boylston-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Boylston contains the link label 'Select Board AGENDA: Meeting 09/08/26 Presentation on Flock Safety and ALPR Technology' pointing to https://www.boylston-ma.gov/Documents/Community/Government/Board of Selectman/Agendas Minutes/2026/Agenda/09.28.2026 Agenda.pdf?t=202609231326310. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Boylston contains the link label 'Select Board AGENDA: Meeting 09/08/26 Presentation on Flock Safety and ALPR Technology' pointing to https://www.boylston-ma.gov/Documents/Community/Government/Board%20of%20Selectman/Agendas%20Minutes/2026/Agenda/09.28.2026%20Agenda.pdf?t=202609231326310. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -6873,7 +6819,7 @@
           "source_id": "ma-brewster-executive-1",
           "name": "Email Town Manager",
           "department_type": "executive",
-          "canonical_url": "http://www.brewster-ma.gov/cdn-cgi/l/email-protection#3a4e554d54575b545b5d5f487a58485f4d494e5f4817575b145d554c",
+          "canonical_url": "http://www.brewster-ma.gov/cdn-cgi/l/email-protection#73071c041d1e121d121416013311011604000716015e1e125d141c05",
           "supported_issue_categories": [
             "municipal_governance"
           ],
@@ -6886,7 +6832,7 @@
               "reference_url": "http://www.brewster-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Brewster contains the link label 'Email Town Manager' pointing to http://www.brewster-ma.gov/cdn-cgi/l/email-protection#3a4e554d54575b545b5d5f487a58485f4d494e5f4817575b145d554c. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Brewster contains the link label 'Email Town Manager' pointing to http://www.brewster-ma.gov/cdn-cgi/l/email-protection#73071c041d1e121d121416013311011604000716015e1e125d141c05. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -15607,7 +15553,7 @@
               "reference_url": "http://www.fallriverma.org",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Fall River contains the link label '2026 City Council Committee Assignments' pointing to http://www.fallriverma.org/Document Center/Goverment/City Council/Committee List 2026 AMENDED.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Fall River contains the link label '2026 City Council Committee Assignments' pointing to http://www.fallriverma.org/Document%20Center/Goverment/City%20Council/Committee%20List%202026%20AMENDED.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17768,7 +17714,7 @@
           "source_id": "ma-foxborough-clerk-71",
           "name": "Oct 17 TOWN CLERK Saturday October 17 10:00AM - 2:00PM",
           "department_type": "clerk",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414663&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-17T10:00&localEndDate=2026-10-17T14:00&ref=mesTP9fg96fVsgzpWYeogJGG%2fKJmaxbC%2f%2fx7HS0vkEs%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414663&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-17T10:00&localEndDate=2026-10-17T14:00&ref=mesTP9fg96fVsgzpWYeogIxmmvtSLrBxoVJL1cCvReA%3d",
           "supported_issue_categories": [
             "municipal_records",
             "licenses"
@@ -17782,7 +17728,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 17 TOWN CLERK Saturday October 17 10:00AM - 2:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414663&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-17T10:00&localEndDate=2026-10-17T14:00&ref=mesTP9fg96fVsgzpWYeogJGG%2fKJmaxbC%2f%2fx7HS0vkEs%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 17 TOWN CLERK Saturday October 17 10:00AM - 2:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414663&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-17T10:00&localEndDate=2026-10-17T14:00&ref=mesTP9fg96fVsgzpWYeogIxmmvtSLrBxoVJL1cCvReA%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17792,7 +17738,7 @@
           "source_id": "ma-foxborough-health-72",
           "name": "Oct 20 BRISTOL COUNTY PUBLIC HEALTH EMERGENCY PREPAREDNESS COALITION Tuesday October 20 1:30PM - 3:00PM",
           "department_type": "health",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21419139&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T13:30&localEndDate=2026-10-20T15:00&ref=mesTP9fg96fVsgzpWYeogNFNmS1%2f5iSaXtGc1%2bMC2Ns%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21419139&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T13:30&localEndDate=2026-10-20T15:00&ref=mesTP9fg96fVsgzpWYeogFIdlS7tuXMvVe%2fONdHxc9Y%3d",
           "supported_issue_categories": [
             "public_health"
           ],
@@ -17805,7 +17751,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 20 BRISTOL COUNTY PUBLIC HEALTH EMERGENCY PREPAREDNESS COALITION Tuesday October 20 1:30PM - 3:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21419139&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T13:30&localEndDate=2026-10-20T15:00&ref=mesTP9fg96fVsgzpWYeogNFNmS1%2f5iSaXtGc1%2bMC2Ns%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 20 BRISTOL COUNTY PUBLIC HEALTH EMERGENCY PREPAREDNESS COALITION Tuesday October 20 1:30PM - 3:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21419139&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T13:30&localEndDate=2026-10-20T15:00&ref=mesTP9fg96fVsgzpWYeogFIdlS7tuXMvVe%2fONdHxc9Y%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17815,7 +17761,7 @@
           "source_id": "ma-foxborough-conservation-73",
           "name": "Oct 20 NORFOLK COUNTY CONSERVATION DISTRICT Tuesday October 20 6:30PM - 7:15PM",
           "department_type": "conservation",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21420557&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T18:30&localEndDate=2026-10-20T19:15&ref=mesTP9fg96fVsgzpWYeogGVc9GcxfWi3D8euXnkJZoc%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21420557&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T18:30&localEndDate=2026-10-20T19:15&ref=mesTP9fg96fVsgzpWYeogIX%2fBM9KyBy9gEHkKX%2frKFw%3d",
           "supported_issue_categories": [
             "conservation",
             "wetlands"
@@ -17829,7 +17775,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 20 NORFOLK COUNTY CONSERVATION DISTRICT Tuesday October 20 6:30PM - 7:15PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21420557&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T18:30&localEndDate=2026-10-20T19:15&ref=mesTP9fg96fVsgzpWYeogGVc9GcxfWi3D8euXnkJZoc%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 20 NORFOLK COUNTY CONSERVATION DISTRICT Tuesday October 20 6:30PM - 7:15PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21420557&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-20T18:30&localEndDate=2026-10-20T19:15&ref=mesTP9fg96fVsgzpWYeogIX%2fBM9KyBy9gEHkKX%2frKFw%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17862,7 +17808,7 @@
           "source_id": "ma-foxborough-planning-75",
           "name": "Oct 22 PLANNING BOARD Thursday October 22 7:00PM - 8:00PM",
           "department_type": "planning",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414158&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-22T19:00&localEndDate=2026-10-22T20:00&ref=mesTP9fg96fVsgzpWYeogPSloW6FO8h8DLaJG17OshU%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414158&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-22T19:00&localEndDate=2026-10-22T20:00&ref=mesTP9fg96fVsgzpWYeogM3dojNrNqEyzhKqLrroAcc%3d",
           "supported_issue_categories": [
             "planning_and_development"
           ],
@@ -17875,7 +17821,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 22 PLANNING BOARD Thursday October 22 7:00PM - 8:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414158&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-22T19:00&localEndDate=2026-10-22T20:00&ref=mesTP9fg96fVsgzpWYeogPSloW6FO8h8DLaJG17OshU%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 22 PLANNING BOARD Thursday October 22 7:00PM - 8:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414158&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-22T19:00&localEndDate=2026-10-22T20:00&ref=mesTP9fg96fVsgzpWYeogM3dojNrNqEyzhKqLrroAcc%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17885,7 +17831,7 @@
           "source_id": "ma-foxborough-clerk-76",
           "name": "Oct 26 TOWN CLERK Monday October 26 9:00AM - 4:00PM",
           "department_type": "clerk",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414670&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-26T09:00&localEndDate=2026-10-26T16:00&ref=mesTP9fg96fVsgzpWYeogP3nf%2bG1qVPlpKWR372GatY%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414670&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-26T09:00&localEndDate=2026-10-26T16:00&ref=mesTP9fg96fVsgzpWYeogFNrxFD81VVn6iRxjrwCLoA%3d",
           "supported_issue_categories": [
             "municipal_records",
             "licenses"
@@ -17899,7 +17845,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 26 TOWN CLERK Monday October 26 9:00AM - 4:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414670&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-26T09:00&localEndDate=2026-10-26T16:00&ref=mesTP9fg96fVsgzpWYeogP3nf%2bG1qVPlpKWR372GatY%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 26 TOWN CLERK Monday October 26 9:00AM - 4:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414670&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-26T09:00&localEndDate=2026-10-26T16:00&ref=mesTP9fg96fVsgzpWYeogFNrxFD81VVn6iRxjrwCLoA%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17909,7 +17855,7 @@
           "source_id": "ma-foxborough-clerk-77",
           "name": "Oct 27 TOWN CLERK Tuesday October 27 9:00AM - 6:00PM",
           "department_type": "clerk",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414678&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-27T09:00&localEndDate=2026-10-27T18:00&ref=mesTP9fg96fVsgzpWYeogAiIvnXBzdsbEP7kED0%2fZN0%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414678&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-27T09:00&localEndDate=2026-10-27T18:00&ref=mesTP9fg96fVsgzpWYeogPv8aK0pTfAVb47k5ntU2ug%3d",
           "supported_issue_categories": [
             "municipal_records",
             "licenses"
@@ -17923,7 +17869,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 27 TOWN CLERK Tuesday October 27 9:00AM - 6:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414678&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-27T09:00&localEndDate=2026-10-27T18:00&ref=mesTP9fg96fVsgzpWYeogAiIvnXBzdsbEP7kED0%2fZN0%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 27 TOWN CLERK Tuesday October 27 9:00AM - 6:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414678&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-27T09:00&localEndDate=2026-10-27T18:00&ref=mesTP9fg96fVsgzpWYeogPv8aK0pTfAVb47k5ntU2ug%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17957,7 +17903,7 @@
           "source_id": "ma-foxborough-clerk-79",
           "name": "Oct 29 TOWN CLERK Thursday October 29 9:00AM - 4:00PM",
           "department_type": "clerk",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414698&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-29T09:00&localEndDate=2026-10-29T16:00&ref=mesTP9fg96fVsgzpWYeogA14aYYwrBBKV39bempQ9SA%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414698&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-29T09:00&localEndDate=2026-10-29T16:00&ref=mesTP9fg96fVsgzpWYeogCRIVhrjFF0iB%2bHgTlQn0UM%3d",
           "supported_issue_categories": [
             "municipal_records",
             "licenses"
@@ -17971,7 +17917,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 29 TOWN CLERK Thursday October 29 9:00AM - 4:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414698&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-29T09:00&localEndDate=2026-10-29T16:00&ref=mesTP9fg96fVsgzpWYeogA14aYYwrBBKV39bempQ9SA%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 29 TOWN CLERK Thursday October 29 9:00AM - 4:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414698&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-29T09:00&localEndDate=2026-10-29T16:00&ref=mesTP9fg96fVsgzpWYeogCRIVhrjFF0iB%2bHgTlQn0UM%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -17981,7 +17927,7 @@
           "source_id": "ma-foxborough-clerk-80",
           "name": "Oct 30 TOWN CLERK Friday October 30 9:00AM - 4:00PM",
           "department_type": "clerk",
-          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414704&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-30T09:00&localEndDate=2026-10-30T16:00&ref=mesTP9fg96fVsgzpWYeogG5x7uG5ujzrUthPsY2txCE%3d",
+          "canonical_url": "http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414704&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-30T09:00&localEndDate=2026-10-30T16:00&ref=mesTP9fg96fVsgzpWYeogMq6Dn9GlDZ%2b0n60Q4yetJ8%3d",
           "supported_issue_categories": [
             "municipal_records",
             "licenses"
@@ -17995,7 +17941,7 @@
               "reference_url": "http://foxboroughma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 30 TOWN CLERK Friday October 30 9:00AM - 4:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414704&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-30T09:00&localEndDate=2026-10-30T16:00&ref=mesTP9fg96fVsgzpWYeogG5x7uG5ujzrUthPsY2txCE%3d. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Foxborough contains the link label 'Oct 30 TOWN CLERK Friday October 30 9:00AM - 4:00PM' pointing to http://foxboroughma.gov/cms/one.aspx?portalId=15207864&pageId=15207880&objectId.335219=21414704&contextId.335219=15252116&parentId.335219=15252117&localStartDate=2026-10-30T09:00&localEndDate=2026-10-30T16:00&ref=mesTP9fg96fVsgzpWYeogMq6Dn9GlDZ%2b0n60Q4yetJ8%3d. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -33030,7 +32976,7 @@
               "reference_url": "http://www.cityofmalden.org/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Malden contains the link label 'Building Inspections Learn More' pointing to http://www.cityofmalden.org/182/Inspectional-Services . This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Malden contains the link label 'Building Inspections Learn More' pointing to http://www.cityofmalden.org/182/Inspectional-Services. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -41740,7 +41686,7 @@
               "reference_url": "http://www.northadams-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for North Adams contains the link label 'City Permitting Guide' pointing to http://www.northadams-ma.gov/Business/Permitting Guide_North Adams.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for North Adams contains the link label 'City Permitting Guide' pointing to http://www.northadams-ma.gov/Business/Permitting%20Guide_North%20Adams.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -41790,7 +41736,7 @@
               "reference_url": "http://www.northadams-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for North Adams contains the link label 'Zoning Map' pointing to http://www.northadams-ma.gov/community development/ZoningMap.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for North Adams contains the link label 'Zoning Map' pointing to http://www.northadams-ma.gov/community%20development/ZoningMap.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -42939,7 +42885,7 @@
               "reference_url": "http://www.norwoodma.gov",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Norwood contains the link label 'Licensing & Permitting Fees' pointing to https://www.norwoodma.gov/document_center/index.php#fees . This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Norwood contains the link label 'Licensing & Permitting Fees' pointing to https://www.norwoodma.gov/document_center/index.php#fees. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -43012,7 +42958,7 @@
               "reference_url": "http://www.norwoodma.gov",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Norwood contains the link label 'Licenses & Permitting' pointing to https://www.norwoodma.gov/document_center/index.php#permits . This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Norwood contains the link label 'Licenses & Permitting' pointing to https://www.norwoodma.gov/document_center/index.php#permits. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44698,7 +44644,7 @@
           "source_id": "ma-peabody-elections-2",
           "name": "Voting Information",
           "department_type": "elections",
-          "canonical_url": "https://www.peabody-ma.gov/city%20clerk.html#home,#collapseOnex",
+          "canonical_url": "https://www.peabody-ma.gov/city%20clerk.html#home,%23collapseOnex",
           "supported_issue_categories": [
             "elections",
             "voter_registration"
@@ -44712,7 +44658,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Voting Information' pointing to https://www.peabody-ma.gov/city clerk.html#home,#collapseOnex. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Voting Information' pointing to https://www.peabody-ma.gov/city%20clerk.html#home,%23collapseOnex. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44735,7 +44681,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Mayor Bettencourt Delivers Inaugural Address (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/mayors/Inaugural 26F.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Mayor Bettencourt Delivers Inaugural Address (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/mayors/Inaugural%2026F.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44760,7 +44706,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Zoning Amendment – Section 8 Floodplain Overlay District and Wetlands Conservancy District (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/inspector/Zoning - Wetlands Conservancy District.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Zoning Amendment – Section 8 Floodplain Overlay District and Wetlands Conservancy District (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/inspector/Zoning%20-%20Wetlands%20Conservancy%20District.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44785,7 +44731,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Zoning Amendment - Multi-family Overlay District (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/city clerk/Zoning Amendment - Multi-family Overlay District MFOD.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Zoning Amendment - Multi-family Overlay District (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/city%20clerk/Zoning%20Amendment%20-%20Multi-family%20Overlay%20District%20MFOD.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44812,7 +44758,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Peabody recycling information (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/L- Dual Stream Recycling Chart (002).pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Peabody recycling information (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/L-%20Dual%20Stream%20Recycling%20Chart%20(002).pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44835,7 +44781,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Mayor's Budget Letter to Council (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/finance/FY2027/FY2027 Mayor Budget Letter.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Mayor's Budget Letter to Council (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/finance/FY2027/FY2027%20Mayor%20Budget%20Letter.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44858,7 +44804,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Mayor's Budget Letter to Council (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/finance/FY2026/FY2026 Mayor Budget Letter.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Mayor's Budget Letter to Council (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/finance/FY2026/FY2026%20Mayor%20Budget%20Letter.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44885,7 +44831,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Trash & Recycling Holiday Schedule (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/2026 Trash Recycling Holiday Schedule.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Trash & Recycling Holiday Schedule (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/2026%20Trash%20Recycling%20Holiday%20Schedule.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44912,7 +44858,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Peabody Recycling Center (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/Peabody Recycling Center Flyer.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Peabody Recycling Center (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/Peabody%20Recycling%20Center%20Flyer.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44966,7 +44912,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Important Trash & Recycling News (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/IMPORTANT TRASH INFORMATION.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Important Trash & Recycling News (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/dpw/IMPORTANT%20TRASH%20INFORMATION.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -44990,7 +44936,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Voting Information' pointing to http://www.peabody-ma.gov/city clerk.html. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Voting Information' pointing to http://www.peabody-ma.gov/city%20clerk.html. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -45015,7 +44961,7 @@
               "reference_url": "http://www.peabody-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Zoning Map (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/city clerk/Peabody_Zoning_Map_Final.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Peabody contains the link label 'Zoning Map (PDF file, opens in PDF reader)' pointing to http://www.peabody-ma.gov/city%20clerk/Peabody_Zoning_Map_Final.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -48274,7 +48220,7 @@
               "reference_url": "http://www.richmondma.org",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Richmond contains the link label '2026 Recycling Schedule' pointing to http://www.richmondma.org/Trash 2026.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Richmond contains the link label '2026 Recycling Schedule' pointing to http://www.richmondma.org/Trash%202026.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -57156,7 +57102,7 @@
               "reference_url": "https://www.swanseama.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Swansea contains the link label 'Job Description - Building/Zoning Commissioner' pointing to https://www.swanseama.gov/Document_Center/Departments/Building/Job Description - Building Zoning Commissioner/job_description-building_inspector.doc. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Swansea contains the link label 'Job Description - Building/Zoning Commissioner' pointing to https://www.swanseama.gov/Document_Center/Departments/Building/Job%20Description%20-%20Building%20Zoning%20Commissioner/job_description-building_inspector.doc. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -62207,7 +62153,7 @@
               "reference_url": "http://www.westtisbury-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'Board of Health Regulations' pointing to http://www.westtisbury-ma.gov/Documents/Government/Board of Health/Board of Health Regulations (PDF).pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'Board of Health Regulations' pointing to http://www.westtisbury-ma.gov/Documents/Government/Board%20of%20Health/Board%20of%20Health%20Regulations%20(PDF).pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -62354,7 +62300,7 @@
               "reference_url": "http://www.westtisbury-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'WT Zoning Bylaw Updated April 2024' pointing to http://www.westtisbury-ma.gov/Documents/Government/Planning Board/Wt Zoning Bylaws April 2024 (PDF).pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'WT Zoning Bylaw Updated April 2024' pointing to http://www.westtisbury-ma.gov/Documents/Government/Planning%20Board/Wt%20Zoning%20Bylaws%20April%202024%20(PDF).pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -62471,7 +62417,7 @@
               "reference_url": "http://www.westtisbury-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'Ponds Healthy Watersheds Letter to Planning Board' pointing to http://www.westtisbury-ma.gov/Documents/Government/Visioning Committee/Ponds Healthy Watersheds Letter to Planning Board (PDF).pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'Ponds Healthy Watersheds Letter to Planning Board' pointing to http://www.westtisbury-ma.gov/Documents/Government/Visioning%20Committee/Ponds%20Healthy%20Watersheds%20Letter%20to%20Planning%20Board%20(PDF).pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -62545,7 +62491,7 @@
               "reference_url": "http://www.westtisbury-ma.gov/",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'Zoning' pointing to http://www.westtisbury-ma.gov/Zoning Bylaws 2025.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for West Tisbury contains the link label 'Zoning' pointing to http://www.westtisbury-ma.gov/Zoning%20Bylaws%202025.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -63088,35 +63034,7 @@
       "government_form": null,
       "official_website": "http://www.westhampton-ma.com/",
       "record_status": "incomplete",
-      "official_sources": [
-        {
-          "source_id": "ma-westhampton-public-works-1",
-          "name": "Highway Department",
-          "department_type": "public_works",
-          "canonical_url": "http://www.westhampton-ma.com/cdn-cgi/l/email-protection#167e7f717e61776f7273666256617365627e777b666279787b7738717960296563747c7375622b575a53444249437865777073364479777236557978727f627f797865",
-          "supported_issue_categories": [
-            "roads",
-            "sidewalks",
-            "public_works",
-            "trash_recycling",
-            "water_sewer"
-          ],
-          "verification_status": "unverified",
-          "url_status": "not_checked",
-          "last_content_reviewed_at": null,
-          "evidence": [
-            {
-              "source_type": "official_website",
-              "reference_url": "http://www.westhampton-ma.com/",
-              "checked_at": "2026-10-16",
-              "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Westhampton contains the link label 'Highway Department' pointing to http://www.westhampton-ma.com/cdn-cgi/l/email-protection#167e7f717e61776f7273666256617365627e777b666279787b7738717960296563747c7375622b575a53444249437865777073364479777236557978727f627f797865. This is a discovery lead only, not proof of departmental authority.",
-              "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
-            }
-          ],
-          "notes": "Unverified navigation candidate. Do not treat as a confirmed service contact or statutory responsibility."
-        }
-      ],
+      "official_sources": [],
       "evidence": [
         {
           "source_type": "official_dataset",
@@ -63469,7 +63387,7 @@
               "reference_url": "http://www.westport-ma.com",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Westport contains the link label '2026 Select Board Meeting Calendar' pointing to https://www.westport-ma.com/Documents/Government/Select Board/2026 Select Board Calendar.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Westport contains the link label '2026 Select Board Meeting Calendar' pointing to https://www.westport-ma.com/Documents/Government/Select%20Board/2026%20Select%20Board%20Calendar.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -63611,7 +63529,7 @@
               "reference_url": "http://www.westport-ma.com",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Westport contains the link label '2026 Conservation Meeting Calendar' pointing to https://www.westport-ma.com/Documents/Departments/Conservation Commission/2026 Comcom_calendar Planning Board meetings.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Westport contains the link label '2026 Conservation Meeting Calendar' pointing to https://www.westport-ma.com/Documents/Departments/Conservation%20Commission/2026%20Comcom_calendar%20Planning%20Board%20meetings.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -63733,7 +63651,7 @@
               "reference_url": "http://www.westport-ma.com",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Westport contains the link label '2026 Planning Board Meeting Calendar' pointing to https://www.westport-ma.com/Documents/Departments/Planning/calendar Planning Board meetings_2026_R1.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Westport contains the link label '2026 Planning Board Meeting Calendar' pointing to https://www.westport-ma.com/Documents/Departments/Planning/calendar%20Planning%20Board%20meetings_2026_R1.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -63887,7 +63805,7 @@
               "reference_url": "http://www.westport-ma.com",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Westport contains the link label 'Textile Flyer (Clothing & other materal recycling)' pointing to https://www.westport-ma.com/Documents/Departments/Transfer Station Recycling Center/textile_flyer_5-29-24.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Westport contains the link label 'Textile Flyer (Clothing & other materal recycling)' pointing to https://www.westport-ma.com/Documents/Departments/Transfer%20Station%20Recycling%20Center/textile_flyer_5-29-24.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
@@ -64006,7 +63924,7 @@
               "reference_url": "http://www.westport-ma.com",
               "checked_at": "2026-10-16",
               "checked_by": "CivicPatch automated ingestion",
-              "claim_supported": "The candidate homepage navigation for Westport contains the link label 'FY22 Proposed Zoning Amendments' pointing to https://www.westport-ma.com/Documents/Where Do I Go For/atm_22_zoning_amendment_articles.pdf. This is a discovery lead only, not proof of departmental authority.",
+              "claim_supported": "The candidate homepage navigation for Westport contains the link label 'FY22 Proposed Zoning Amendments' pointing to https://www.westport-ma.com/Documents/Where%20Do%20I%20Go%20For/atm_22_zoning_amendment_articles.pdf. This is a discovery lead only, not proof of departmental authority.",
               "notes": "Automatically discovered from homepage navigation. Must be reviewed for current ownership, scope, and municipal responsibility."
             }
           ],
