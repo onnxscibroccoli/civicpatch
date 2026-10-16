@@ -78,6 +78,13 @@ class CivicPatchSmokeTests(unittest.TestCase):
             if parsed.path:
                 self.assertTrue(path.exists(), f"Broken local link: {href}")
 
+    def test_public_directory_is_connected_with_explicit_trust_states(self):
+        self.assertIn('id="directory"', self.html)
+        self.assertIn('fetch("data/ma/municipalities.json"', self.html)
+        self.assertIn('id="municipal-directory-match"', self.html)
+        self.assertIn("not yet validated", self.html)
+        self.assertTrue((ROOT / "data" / "ma" / "municipalities.json").exists())
+
     def test_in_browser_guide_and_privacy_disclosure_exist(self):
         self.assertIn('id="civic-form"', self.html)
         self.assertIn('addEventListener("submit"', self.html)
