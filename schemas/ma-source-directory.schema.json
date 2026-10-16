@@ -2,37 +2,88 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/onnxscibroccoli/civicpatch/blob/main/schemas/ma-source-directory.schema.json",
   "title": "CivicPatch Massachusetts Source Directory",
-  "description": "A provenance-first directory. A record is not verified merely because it conforms to this schema or its URL responds.",
+  "description": "A provenance-first directory. A record is not verified merely because it conforms to this schema or its URL responds. OCD-IDs may be null until independently verified against an authoritative registry.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "jurisdiction", "coverage", "municipalities"],
+  "required": [
+    "schema_version",
+    "jurisdiction",
+    "coverage",
+    "municipalities"
+  ],
   "properties": {
-    "schema_version": {"type": "string", "const": "1.0.0"},
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "jurisdiction": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["country_code", "state_code", "state_fips"],
+      "required": [
+        "country_code",
+        "state_code",
+        "state_fips"
+      ],
       "properties": {
-        "country_code": {"type": "string", "const": "US"},
-        "state_code": {"type": "string", "const": "MA"},
-        "state_fips": {"type": "string", "const": "25"}
+        "country_code": {
+          "type": "string",
+          "const": "US"
+        },
+        "state_code": {
+          "type": "string",
+          "const": "MA"
+        },
+        "state_fips": {
+          "type": "string",
+          "const": "25"
+        }
       }
     },
     "coverage": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["target_municipalities", "records_present", "verified_records", "status", "generated_at"],
+      "required": [
+        "target_municipalities",
+        "records_present",
+        "verified_records",
+        "status",
+        "generated_at"
+      ],
       "properties": {
-        "target_municipalities": {"type": "integer", "const": 351},
-        "records_present": {"type": "integer", "minimum": 0, "maximum": 351},
-        "verified_records": {"type": "integer", "minimum": 0, "maximum": 351},
-        "status": {"type": "string", "enum": ["not_started", "in_progress", "review_required", "coverage_target_met"]},
-        "generated_at": {"type": "string", "format": "date"}
+        "target_municipalities": {
+          "type": "integer",
+          "const": 351
+        },
+        "records_present": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 351
+        },
+        "verified_records": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 351
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "not_started",
+            "in_progress",
+            "review_required",
+            "coverage_target_met"
+          ]
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date"
+        }
       }
     },
     "municipalities": {
       "type": "array",
-      "items": {"$ref": "#/$defs/Municipality"},
+      "items": {
+        "$ref": "#/$defs/Municipality"
+      },
       "uniqueItems": true
     }
   },
@@ -40,51 +91,229 @@
     "Evidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_type", "reference_url", "checked_at", "checked_by", "claim_supported"],
+      "required": [
+        "source_type",
+        "reference_url",
+        "checked_at",
+        "checked_by",
+        "claim_supported"
+      ],
       "properties": {
-        "source_type": {"type": "string", "enum": ["official_website", "official_dataset", "municipal_charter_or_bylaw", "direct_confirmation", "massgis_record", "other_primary_source"]},
-        "reference_url": {"type": "string", "format": "uri"},
-        "checked_at": {"type": "string", "format": "date"},
-        "checked_by": {"type": "string", "minLength": 1},
-        "claim_supported": {"type": "string", "minLength": 1},
-        "notes": {"type": "string"}
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "official_website",
+            "official_dataset",
+            "municipal_charter_or_bylaw",
+            "direct_confirmation",
+            "massgis_record",
+            "other_primary_source"
+          ]
+        },
+        "reference_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "checked_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_supported": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     },
     "OfficialSource": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source_id", "name", "department_type", "canonical_url", "supported_issue_categories", "verification_status", "url_status", "last_content_reviewed_at", "evidence"],
+      "required": [
+        "source_id",
+        "name",
+        "department_type",
+        "canonical_url",
+        "supported_issue_categories",
+        "verification_status",
+        "url_status",
+        "last_content_reviewed_at",
+        "evidence"
+      ],
       "properties": {
-        "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
-        "name": {"type": "string", "minLength": 1},
-        "department_type": {"type": "string", "enum": ["executive", "clerk", "public_works", "health", "conservation", "building_zoning", "finance", "public_safety", "planning", "elections", "other"]},
-        "canonical_url": {"type": "string", "format": "uri"},
-        "contact_phone": {"type": "string"},
-        "contact_email": {"type": "string", "format": "email"},
-        "supported_issue_categories": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-        "verification_status": {"type": "string", "enum": ["verified", "incomplete", "stale", "broken", "unverified"]},
-        "url_status": {"type": "string", "enum": ["not_checked", "reachable", "redirected", "broken", "manual_review"]},
-        "last_content_reviewed_at": {"type": ["string", "null"], "format": "date"},
-        "evidence": {"type": "array", "items": {"$ref": "#/$defs/Evidence"}, "minItems": 1},
-        "notes": {"type": "string"}
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "department_type": {
+          "type": "string",
+          "enum": [
+            "executive",
+            "clerk",
+            "public_works",
+            "health",
+            "conservation",
+            "building_zoning",
+            "finance",
+            "public_safety",
+            "planning",
+            "elections",
+            "other"
+          ]
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "contact_phone": {
+          "type": "string"
+        },
+        "contact_email": {
+          "type": "string",
+          "format": "email"
+        },
+        "supported_issue_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "incomplete",
+            "stale",
+            "broken",
+            "unverified"
+          ]
+        },
+        "url_status": {
+          "type": "string",
+          "enum": [
+            "not_checked",
+            "reachable",
+            "redirected",
+            "broken",
+            "manual_review"
+          ]
+        },
+        "last_content_reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     },
     "Municipality": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["municipality_id", "name", "massgis_town_id", "ocd_id", "record_status", "official_sources", "evidence"],
+      "required": [
+        "municipality_id",
+        "name",
+        "massgis_town_id",
+        "ocd_id",
+        "record_status",
+        "official_sources",
+        "evidence"
+      ],
       "properties": {
-        "municipality_id": {"type": "string", "pattern": "^ma-[a-z0-9-]+$"},
-        "name": {"type": "string", "minLength": 1},
-        "massgis_town_id": {"type": "integer", "minimum": 1, "maximum": 351},
-        "ocd_id": {"type": "string", "pattern": "^ocd-division/country:us/state:ma/place:[a-z0-9_]+$"},
-        "government_form": {"type": ["string", "null"], "enum": ["Mayor-Council", "Council-Manager", "Open Town Meeting", "Representative Town Meeting", "Other", null]},
-        "official_website": {"type": ["string", "null"], "format": "uri"},
-        "record_status": {"type": "string", "enum": ["verified", "incomplete", "stale", "unverified"]},
-        "official_sources": {"type": "array", "items": {"$ref": "#/$defs/OfficialSource"}},
-        "evidence": {"type": "array", "items": {"$ref": "#/$defs/Evidence"}},
-        "last_content_reviewed_at": {"type": ["string", "null"], "format": "date"},
-        "notes": {"type": "string"}
+        "municipality_id": {
+          "type": "string",
+          "pattern": "^ma-[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "massgis_town_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 351,
+          "description": "MassGIS identifier for municipality boundary lookup only; does not establish service responsibility."
+        },
+        "ocd_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^ocd-division/country:us/state:ma/(place|cousub):[a-z0-9_]+$",
+          "description": "Null until independently validated against an authoritative OCD-ID registry; syntactic validity alone is not semantic validation."
+        },
+        "government_form": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "Mayor-Council",
+            "Council-Manager",
+            "Open Town Meeting",
+            "Representative Town Meeting",
+            "Other",
+            null
+          ]
+        },
+        "official_website": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "record_status": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "incomplete",
+            "stale",
+            "unverified"
+          ]
+        },
+        "official_sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OfficialSource"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          }
+        },
+        "last_content_reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     }
   }
