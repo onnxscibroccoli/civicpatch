@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="CivicPatch">
+  <rect width="32" height="32" rx="6" fill="#1C2A33"/>
+  <rect x="2" y="14" width="9" height="4" fill="#A86B12"/>
+  <rect x="21" y="14" width="9" height="4" fill="#A86B12"/>
+  <rect x="8" y="7" width="16" height="18" rx="3" fill="#0F6E62"/>
+</svg>
