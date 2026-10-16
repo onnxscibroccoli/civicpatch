@@ -6,9 +6,9 @@ CivicPatch is a public-interest navigation layer that helps people find reliable
 
 ## Current deployment shape
 
-The current application is a static HTML/CSS/JavaScript site hosted through GitHub Pages. Its guide constructs external search links in the browser. It does not currently run a backend, store submissions, geocode street addresses, or maintain a verified statewide service directory.
+The application is a static HTML/CSS/JavaScript site intended for GitHub Pages. The guide constructs external search links in the browser and loads the versioned Massachusetts directory JSON to display coverage and matching municipality provenance. It does not run a backend, store submissions, or geocode street addresses. The checked-in baseline may still be empty while the automated ingestion workflow is blocked from opening its review pull request.
 
-GitHub Actions is responsible for running tests before the Pages workflow uploads and publishes the site. The separate data-validation workflow runs on pull requests, pushes to main, a nightly schedule, and manual dispatch. Workflow success proves that automated checks passed, not that all source facts are accurate.
+GitHub Actions runs the site/data test suite and coverage report on pushes, pull requests, nightly schedule, and manual dispatch. The Massachusetts refresh workflow queries the MassGIS feature layer, matches candidate official homepages from the Commonwealth directory, and scrapes same-site homepage navigation for possible department links. All scraped records remain incomplete and all department links remain unverified. A separate scheduled URL-health workflow publishes an artifact and never changes factual verification states. Workflow success proves only that the executed checks passed, not that all source facts are accurate.
 
 ## Target logical architecture
 
@@ -30,7 +30,7 @@ GitHub Actions is responsible for running tests before the Pages workflow upload
 
 ## Massachusetts geographic integration
 
-MassGIS data is a candidate authoritative source for municipal boundaries, town identifiers, and address-related geographic data. Integration is not yet implemented in the current static application. Before using an address locator, document its license/terms, dataset vintage, coordinate reference system, match quality, and fallback behavior.
+MassGIS data is a candidate authoritative source for municipal boundaries, town identifiers, and address-related geographic data. The MassGIS registry ingestion is implemented as an automated workflow, but the checked-in data update is awaiting the repository's Actions write-permission configuration and review. The static application is connected to the versioned JSON directory. Before using an address locator, document its license/terms, dataset vintage, coordinate reference system, match quality, and fallback behavior.
 
 A postal place name or ZIP code must not be treated as conclusive proof of municipal jurisdiction. If CivicPatch later accepts street addresses, prefer on-device processing when feasible and explain any external geocoding provider before sending data. Do not retain precise addresses unless a reviewed product requirement justifies it.
 
