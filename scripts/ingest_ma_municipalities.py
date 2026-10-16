@@ -109,7 +109,7 @@ ISSUE_CATEGORIES = {
 
 def classify_department(label):
     normalized = re.sub(r"[^a-z0-9 ]+", " ", (label or "").casefold())
-    normalized = re.sub(r"\\s+", " ", normalized).strip()
+    normalized = re.sub(r"\s+", " ", normalized).strip()
     if not normalized:
         return []
     return [department for department, keywords in DEPARTMENT_KEYWORDS.items()
@@ -147,7 +147,7 @@ def crawl_service_candidates(record, today):
             if key in seen:
                 continue
             seen.add(key)
-            safe_label = re.sub(r"\\s+", " ", label).strip()[:160] or department.replace("_", " ").title()
+            safe_label = re.sub(r"\s+", " ", label).strip()[:160] or department.replace("_", " ").title()
             source_id = record["municipality_id"] + "-" + department.replace("_", "-") + "-" + str(len(candidates) + 1)
             candidates.append({
                 "source_id": source_id,
