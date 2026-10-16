@@ -40,10 +40,8 @@ jobs:
           grep -q 'not a fully verified Massachusetts-wide service' index.html
       - name: Run smoke tests
         run: python -m unittest discover -s tests -v
-      - name: Configure Pages
+      - name: Read existing Pages configuration
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
