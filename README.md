@@ -10,7 +10,7 @@ The idea matters more than any one implementation. CivicPatch is published openl
 - **Project status:** Early-stage public project. The concept and initial project charter are published; production functionality and statewide coverage are not yet verified.
 - **License:** MIT. See [LICENSE](LICENSE).
 - **Contributing:** See [CONTRIBUTING.md](CONTRIBUTING.md).
-- **Roadmap:** See [docs/ROADMAP.md](docs/ROADMAP.md).
+- **Roadmap:** See [docs/ROADMAP.md](docs/ROADMAP.md).\n- **Architecture:** See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).\n- **Automated ingestion:** See [docs/AUTOMATED-INGESTION.md](docs/AUTOMATED-INGESTION.md).\n- **Coverage metrics:** See [docs/MASSACHUSETTS-COVERAGE.md](docs/MASSACHUSETTS-COVERAGE.md).\n- **URL health monitoring:** See [docs/URL-HEALTH.md](docs/URL-HEALTH.md).
 
 ## The problem
 
