@@ -88,6 +88,7 @@ def fetch_massgis_records():
         "where": "1=1",
         "outFields": "TOWN,TOWN_ID,TYPE,COUNTY,FIPS_STCO",
         "returnGeometry": "false",
+        "returnDistinctValues": "true",
         "orderByFields": "TOWN_ID ASC",
         "f": "json",
     })
