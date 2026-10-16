@@ -70,6 +70,21 @@ class MassachusettsDirectoryTests(unittest.TestCase):
 
         inspect(data)
 
+    def test_fall_river_2026_amended_committee_pdf_is_encoded_in_published_data(self):
+        raw = "http://www.fallriverma.org/Document Center/Goverment/City Council/Committee List 2026 AMENDED.pdf"
+        encoded = "http://www.fallriverma.org/Document%20Center/Goverment/City%20Council/Committee%20List%202026%20AMENDED.pdf"
+        self.assertEqual(normalize_http_url(raw), encoded)
+        self.assertEqual(normalize_http_url(encoded), encoded)  # No double encoding on re-ingest.
+
+        records = json.loads(DATA.read_text(encoding="utf-8"))["municipalities"]
+        fall_river = next(record for record in records if record["name"] == "Fall River")
+        committee_sources = [
+            source for source in fall_river["official_sources"]
+            if source["canonical_url"].endswith("/Committee%20List%202026%20AMENDED.pdf")
+        ]
+        self.assertEqual([source["canonical_url"] for source in committee_sources], [encoded])
+        self.assertEqual(committee_sources[0]["verification_status"], "unverified")
+
     def test_ocd_id_can_remain_unknown_until_semantically_verified(self):
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         ocd = schema["$defs"]["Municipality"]["properties"]["ocd_id"]
