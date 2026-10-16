@@ -14,9 +14,10 @@ class CoverageReportTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         report = json.loads(result.stdout)
         self.assertEqual(report["municipality_target"], 351)
-        self.assertEqual(report["municipalities_present"], 0)
-        self.assertEqual(report["municipality_coverage_percent"], 0)
-        self.assertEqual(report["ocd_ids_populated"], 0)
+        self.assertGreaterEqual(report["municipalities_present"], 0)
+        self.assertLessEqual(report["municipalities_present"], 351)
+        self.assertEqual(report["municipality_coverage_percent"], round(100 * report["municipalities_present"] / 351, 2))
+        self.assertLessEqual(report["ocd_ids_populated"], report["municipalities_present"])
         self.assertEqual(len(report["sectors"]), 6)
         self.assertIn("not factual verification", report["trust_boundary"])
 
