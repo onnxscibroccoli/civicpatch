@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "jurisdiction": {
+    "country_code": "US",
+    "state_code": "MA",
+    "state_fips": "25"
+  },
+  "coverage": {
+    "target_municipalities": 351,
+    "records_present": 0,
+    "verified_records": 0,
+    "status": "not_started",
+    "generated_at": "2026-10-16"
+  },
+  "municipalities": []
+}
