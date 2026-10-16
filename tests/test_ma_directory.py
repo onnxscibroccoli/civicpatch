@@ -18,15 +18,22 @@ class MassachusettsDirectoryTests(unittest.TestCase):
         self.assertEqual(data["schema_version"], "1.0.0")
         self.assertEqual(data["jurisdiction"]["state_fips"], "25")
 
-    def test_unpopulated_directory_is_honestly_reported(self):
+    def test_directory_counts_are_honest(self):
         data = json.loads(DATA.read_text(encoding="utf-8"))
-        self.assertEqual(data["coverage"]["target_municipalities"], 351)
-        self.assertEqual(data["coverage"]["records_present"], len(data["municipalities"]))
-        self.assertEqual(data["coverage"]["verified_records"], 0)
-        self.assertIn(data["coverage"]["status"], {"not_started", "review_required", "in_progress"})
-        self.assertEqual(data["municipalities"], [])
+        records = data["municipalities"]
+        coverage = data["coverage"]
+        self.assertEqual(coverage["target_municipalities"], 351)
+        self.assertEqual(coverage["records_present"], len(records))
+        self.assertEqual(coverage["verified_records"], sum(r.get("record_status") == "verified" for r in records))
+        self.assertLessEqual(len(records), 351)
+        self.assertIn(coverage["status"], {"not_started", "review_required", "in_progress", "coverage_target_met"})
+        if len(records) == 0:
+            self.assertEqual(coverage["status"], "not_started")
+        if len(records) > 0:
+            self.assertNotEqual(coverage["status"], "not_started")
 
     def test_validator_passes_current_directory(self):
+        data = json.loads(DATA.read_text(encoding="utf-8"))
         result = subprocess.run([sys.executable, str(VALIDATOR)], cwd=ROOT, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("records=" + str(len(data["municipalities"])) + "/351", result.stdout)
