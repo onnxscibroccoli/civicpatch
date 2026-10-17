@@ -155,4 +155,12 @@ jobs:
           test -n "$result"
           read -r number head_sha <<< "$result"
           [[ "$number" =~ ^[0-9]+$ ]] && [[ "$head_sha" =~ ^[a-f0-9]{40}$ ]]
+          # Stage the candidate as a clearly labeled public alpha preview source.
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/agent/alpha" >/dev/null 2>&1; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/heads/agent/alpha" -f sha="$head_sha" -F force=true >/dev/null
+          else
+            gh api -X POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref=refs/heads/agent/alpha -f sha="$head_sha" >/dev/null
+          fi
+          # GitHub Pages has one deployment for this repo; the artifact contains /, /alpha and /beta.
+          gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main
           gh workflow run agent-gatekeeper.yml --repo "$GITHUB_REPOSITORY" --ref main -f pr_number="$number" -f expected_sha="$head_sha"
