@@ -86,6 +86,28 @@ def select_goal(root: Path = ROOT) -> dict | None:
     if state.get("period") == month and state.get("period_attempts", 0) >= MAX_MONTHLY_ATTEMPTS:
         return None
     completed = set(state["completed"])
+    blocked_ids = {row["id"] for row in state["blocked"]}
+    # Catch a concrete earlier mistake: a feature described as interactive
+    # that has no event listener. Revisit it in a model review immediately.
+    for goal in goals:
+        if goal["id"] not in completed or "interactive" not in goal["goal"].lower():
+            continue
+        source = root / "alpha-agent/features" / (goal["id"] + ".js")
+        quality_id = "quality-interaction-" + goal["id"]
+        if source.is_file() and quality_id not in blocked_ids:
+            content = source.read_text(encoding="utf-8")
+            if not re.search(r"\.addEventListener\s*\(", content):
+                return {
+                    "id": quality_id, "target": goal["id"],
+                    "title": goal["title"], "kind": "review",
+                    "goal": ("Fix the obvious missed acceptance criterion: this "
+                             "feature is described as interactive but currently "
+                             "renders static text. Add a keyboard-accessible "
+                             "button and real event listener, plus explicit "
+                             "uncertainty. Preserve the useful explanation. "
+                             + goal["goal"]),
+                    "connections": goal["connections"],
+                }
     # Every three successful increments, prioritize evidence-backed inspection
     # and improvement of a prior feature, rather than endlessly adding UI.
     count = state["successful_iterations"]
@@ -391,6 +413,13 @@ def check_live(root: Path, sha: str, base: str, retries: int = 10) -> None:
             source = target.read_text(encoding="utf-8")
             if feature != source:
                 raise ValueError("Published feature differs from candidate")
+            plan = read_json(root / "alpha-agent/plan.json")
+            goal = str(plan.get("task", {}).get("goal", "")).lower()
+            if "interactive" in goal and not re.search(r"\.addEventListener\s*\(", feature):
+                raise ValueError(
+                    "Behavior smoke: interactive goal lacks an event listener. "
+                    "Use a labeled button with addEventListener before retrying."
+                )
             result = subprocess.run(
                 ["node", "--check", str(target)], cwd=root,
                 capture_output=True, text=True, timeout=12,
