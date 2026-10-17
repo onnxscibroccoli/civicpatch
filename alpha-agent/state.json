@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "completed": [],
+  "blocked": [],
+  "attempts": 0,
+  "successful_iterations": 0,
+  "review_count": 0,
+  "last_good_sha": null,
+  "last_failure": null
+}
