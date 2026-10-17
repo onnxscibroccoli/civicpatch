@@ -102,9 +102,11 @@ if [ -n "$accepted" ]; then
     else
       gh api -X POST "repos/$repo/git/refs" -f ref=refs/heads/agent/beta-frontend -f sha="$mature" >/dev/null
     fi
-    gh api -X POST "repos/$repo/actions/workflows/deploy-pages.yml/dispatches" -f ref=main >/dev/null
     echo "Beta frontend promoted after $successes successful Alpha increments."
   fi
+  # Refresh the public Alpha/Beta progress counters after the successful
+  # immutable candidate has been acknowledged in the branch state.
+  gh api -X POST "repos/$repo/actions/workflows/deploy-pages.yml/dispatches" -f ref=main >/dev/null
   echo 'Alpha accepted: model feature published and checked after deployment.'
 else
   echo 'Both live attempts failed or model repair was invalid. Restoring previous Alpha code.'
