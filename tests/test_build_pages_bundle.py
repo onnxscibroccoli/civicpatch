@@ -44,11 +44,11 @@ class PagesBundleTests(unittest.TestCase):
             inputs = {
                 "index.html": b"<html><head></head><body>Preview</body></html>",
                 "data/ma/municipalities.json": b"{}",
-                "alpha-agent/index.html": b"<html><head></head><body>Lab</body></html>",
+                "alpha-agent/index.html": b'<html><head></head><body>Lab<section aria-labelledby="features-heading" id="experiments"></section></body></html>',
                 "alpha-agent/base.js": b"window.CivicLab = {};",
                 "alpha-agent/style.css": b"body{color:black}",
-                "alpha-agent/state.json": b"{}",
-                "alpha-agent/roadmap.json": b"{}",
+                "alpha-agent/state.json": b'{"completed":[],"successful_iterations":0,"review_count":0}',
+                "alpha-agent/roadmap.json": b'{"goals":[{"id":"sample","title":"Sample task"}]}',
                 "alpha-agent/features/feature-one.js": b"/* ALPHA GENERATED START */\\nconst ok = true;\\n/* ALPHA GENERATED END */",
             }
             with patch.object(module, "git_blob", side_effect=lambda sha, name: inputs[name]), patch.object(
@@ -62,6 +62,19 @@ class PagesBundleTests(unittest.TestCase):
             self.assertIn("agentic/", (output / "alpha/index.html").read_text())
             self.assertNotIn("feature-one.js", (output / "index.html").read_text())
             self.assertFalse((output / "agentic").exists())
+
+    def test_progress_panel_escapes_untrusted_roadmap_titles(self):
+        html = module.agent_progress_markup(
+            {"completed": ["one"], "successful_iterations": 2, "review_count": 1},
+            {"goals": [{"id": "one", "title": "<img src=x onerror=alert(1)>"}]},
+            "alpha",
+        )
+        self.assertIn("&lt;img", html)
+        self.assertNotIn("<img", html)
+        self.assertIn("2</strong> checked increments", html)
+        self.assertIn("Completed", html)
+        with self.assertRaises(ValueError):
+            module.agent_progress_markup({}, {}, "production")
 
     def test_feature_paths_disallow_symlinks_and_non_js(self):
         with patch.object(module.subprocess, "run") as runner:
