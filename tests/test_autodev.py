@@ -60,6 +60,18 @@ class AutoDevTests(unittest.TestCase):
                 {'path': 'tests/test_sample.py', 'old': 'assert', 'new': 'assert'},
             ]}), self.task, self.root)
 
+    def test_invalid_first_model_output_gets_one_retry(self):
+        from unittest.mock import patch
+        success = json.dumps({'edits': [
+            {'path': 'scripts/sample.py', 'old': 'False', 'new': 'True'},
+            {'path': 'tests/test_sample.py', 'old': 'assert True', 'new': 'assert 1 == 1'},
+        ]})
+        with patch.object(autodev, 'infer', side_effect=[('{"edits":[]}', 'fake'), (success, 'fake')]) as mocked:
+            autodev.generate(self.root)
+        self.assertEqual(mocked.call_count, 2)
+        self.assertIn('FLAG = True', (self.root / 'scripts/sample.py').read_text())
+        self.assertEqual(json.loads((self.root / '.github/autodev/progress.json').read_text())['completed'], ['test'])
+
     def test_only_python_source_and_test_tasks(self):
         with self.assertRaises(ValueError):
             autodev.validate_task({'files': ['.github/workflows/deploy-pages.yml', 'tests/test_sample.py']})
