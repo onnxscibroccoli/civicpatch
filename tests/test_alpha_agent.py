@@ -134,8 +134,8 @@ class AlphaAgentTests(unittest.TestCase):
 
     def test_permanent_self_review_after_feature_limit(self):
         state = dict(self.state)
-        state.update(completed=["source-review"] + [
-            "discovery-" + str(i) for i in range(17)
+        state.update(completed=["source-review", "keyboard-help"] + [
+            "discovery-" + str(i) for i in range(16)
         ], successful_iterations=40, review_count=13, attempts=40)
         alpha.write_json(self.root / "alpha-agent/state.json", state)
         goal = alpha.select_goal(self.root)
