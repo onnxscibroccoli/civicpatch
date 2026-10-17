@@ -101,7 +101,7 @@ jobs:
             exit 1
           fi
       - name: Repair candidate once using captured regression errors
-        if: steps.gate.outputs.run == 'true' && steps.first_tests.outcome == 'failure'
+        if: steps.gate.outputs.run == 'true' && steps.strategy.outputs.type == 'model' && steps.first_tests.outcome == 'failure'
         env:
           CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
           CIVICPATCH_LLM_API_URL: ${{ vars.CIVICPATCH_LLM_API_URL }}

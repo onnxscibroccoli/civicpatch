@@ -122,6 +122,7 @@ class AutoDevTests(unittest.TestCase):
         self.assertNotEqual(source.read_text(), original)
         self.assertIn('transient_error', source.read_text())
         self.assertIn('def test_transient_network_failures', suite.read_text())
+        self.assertIn('if isinstance(error, HTTPError)', suite.read_text())
         self.assertEqual(
             json.loads((self.root / '.github/autodev/progress.json').read_text())['completed'],
             ['p0-url-network-failures'],
