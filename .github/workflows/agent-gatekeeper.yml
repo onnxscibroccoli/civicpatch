@@ -118,13 +118,9 @@ jobs:
           else
             gh api -X POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref=refs/heads/agent/beta -f sha="$SHA" >/dev/null
           fi
-      - name: Promote validated code without human gating
+      - name: Preserve verified beta candidate for review
         shell: bash
         run: |
           set -euo pipefail
-          gh pr ready "$NUMBER" --repo "$GITHUB_REPOSITORY"
-          actual="$(gh pr view "$NUMBER" --repo "$GITHUB_REPOSITORY" --json headRefOid --jq .headRefOid)"
-          test "$actual" = "$SHA"
-          gh pr merge "$NUMBER" --repo "$GITHUB_REPOSITORY" --squash
-      - name: Explicitly trigger Pages because bot merges do not necessarily create push-triggered workflow runs
-        run: gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Candidate $SHA passed independent tests and is available on agent/beta."
+          echo "Production promotion requires an explicit separately authorized release."
