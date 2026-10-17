@@ -1,0 +1,53 @@
+name: Autonomous Alpha frontend experiments
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/agent-alpha.yml"
+      - "scripts/alpha_agent.py"
+      - "scripts/alpha_cycle.sh"
+      - "scripts/build_pages_bundle.py"
+  schedule:
+    - cron: "47 3,15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: civicpatch-alpha-frontend-iteration
+  cancel-in-progress: false
+
+jobs:
+  iterate:
+    if: github.repository == 'onnxscibroccoli/civicpatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    env:
+      HUMAN_IN_THE_LOOP: "false"
+      CIVICPATCH_ALPHA_ROOT: /tmp/civicpatch-alpha
+      GH_TOKEN: ${{ github.token }}
+      CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
+      CIVICPATCH_LLM_API_URL: ${{ vars.CIVICPATCH_LLM_API_URL }}
+      CIVICPATCH_LLM_MODEL: ${{ vars.CIVICPATCH_LLM_MODEL }}
+    steps:
+      - name: Check out trusted GitHub Actions engine from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Bound the goals, generate, commit, deploy, smoke, and repair
+        shell: bash
+        run: bash scripts/alpha_cycle.sh
+      - name: Record immutable Alpha state and diagnostic outcome
+        if: always()
+        shell: bash
+        run: |
+          echo 'The Alpha model cycle is bounded to 17 minutes and two scheduled entries per UTC day.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Site generation is committed and deployed before the light live smoke check.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'A broken candidate is reverted or deferred. Civic data and production HTML are not directly writable by the model.' >> "$GITHUB_STEP_SUMMARY"

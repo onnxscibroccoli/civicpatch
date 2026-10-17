@@ -10,6 +10,21 @@ the exact candidate SHA, merge, and trigger the production Pages release.
 This is **bounded asynchronous autonomy**, not a continuously executing
 daemon and not proof that all CivicPatch milestones are complete.
 
+## Separate model-driven frontend experiment track
+
+The backend code-and-test gatekeeper described below remains active. The additional
+[Alpha frontend loop](ALPHA-AGENTIC-LOOP.md) is a separate GitHub Actions workflow
+that runs twice daily and writes only browser feature modules on its dedicated
+agent/alpha-frontend branch. It maps model-planned dependencies, publishes to the
+experimental /alpha/agentic/ route **before** checking that URL, performs a
+lightweight live/syntax smoke, repairs once or rolls back, and records the failed
+goal for another cycle. Every three successful increments, it stages the Alpha
+frontend snapshot under /beta/agentic/ and prioritizes model-driven review of
+previous work. It does not grant the model access to the production website or
+the civic dataset. Frontend model inference occurs inside GitHub Actions without
+an external ChatGPT prompt session. The original narrow Python release allowlist
+has not been widened.
+
 ## State machine
 
 | Stage | Workflow / entry point | Permission boundary | Advancement |

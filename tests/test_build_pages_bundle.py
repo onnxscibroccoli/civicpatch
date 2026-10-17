@@ -26,6 +26,52 @@ class PagesBundleTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.git_blob("a" * 40, "scripts/autodev.py")
 
+    def test_frontend_preview_uses_explicit_experimental_lab_link(self):
+        sha = "a" * 40
+        page = module.stamp_preview(
+            "<html><head></head><body>Site</body></html>", "alpha", sha, lab=True
+        )
+        self.assertIn('href="agentic/"', page)
+        self.assertIn('name="robots" content="noindex,nofollow"', page)
+        self.assertNotIn('href="agentic/"', module.stamp_preview(
+            "<html><head></head><body>Site</body></html>", "alpha", sha
+        ))
+
+    def test_isolated_frontend_bundle_excludes_model_code_from_production(self):
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "site"
+            sha = "c" * 40
+            inputs = {
+                "index.html": b"<html><head></head><body>Preview</body></html>",
+                "data/ma/municipalities.json": b"{}",
+                "alpha-agent/index.html": b"<html><head></head><body>Lab</body></html>",
+                "alpha-agent/base.js": b"window.CivicLab = {};",
+                "alpha-agent/style.css": b"body{color:black}",
+                "alpha-agent/state.json": b"{}",
+                "alpha-agent/roadmap.json": b"{}",
+                "alpha-agent/features/feature-one.js": b"/* ALPHA GENERATED START */\\nconst ok = true;\\n/* ALPHA GENERATED END */",
+            }
+            with patch.object(module, "git_blob", side_effect=lambda sha, name: inputs[name]), patch.object(
+                module, "feature_paths", return_value=["alpha-agent/features/feature-one.js"]
+            ):
+                module.build(output, alpha_frontend=sha)
+            self.assertTrue((output / "alpha/agentic/features/feature-one.js").is_file())
+            lab = (output / "alpha/agentic/index.html").read_text()
+            self.assertIn('name="civicpatch-frontend-sha" content="' + sha, lab)
+            self.assertIn('features/feature-one.js', lab)
+            self.assertIn("agentic/", (output / "alpha/index.html").read_text())
+            self.assertNotIn("feature-one.js", (output / "index.html").read_text())
+            self.assertFalse((output / "agentic").exists())
+
+    def test_feature_paths_disallow_symlinks_and_non_js(self):
+        with patch.object(module.subprocess, "run") as runner:
+            runner.return_value.stdout = b"120000 blob abc123\\talpha-agent/features/unsafe.js\\n"
+            with self.assertRaises(ValueError):
+                module.feature_paths("a" * 40)
+            runner.return_value.stdout = b"100644 blob abc123\\talpha-agent/features/../../bad.js\\n"
+            with self.assertRaises(ValueError):
+                module.feature_paths("a" * 40)
+
     def test_production_bundle_does_not_copy_git_or_workflows(self):
         with tempfile.TemporaryDirectory() as temp:
             out = Path(temp) / "site"
