@@ -1,6 +1,10 @@
 name: Bounded agentic CivicPatch development
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bounded-autodev.yml'
   schedule:
     # Four distributed cycles daily, at off-hour UTC minutes. At most 4 x 15 min/day.
     - cron: "19 2,8,14,20 * * *"
