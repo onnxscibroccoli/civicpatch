@@ -65,6 +65,8 @@ class AlphaAgentTests(unittest.TestCase):
             'navigator.sendBeacon("/track", "x");',
             'localStorage.setItem("private", "1");',
             'window.location = "https://evil.example";',
+            'alert("This does not implement the feature");',
+            'confirm("Proceed?");',
         ):
             with self.subTest(unsafe=unsafe), self.assertRaises(ValueError):
                 alpha.checked_body(unsafe)
@@ -205,6 +207,46 @@ class AlphaAgentTests(unittest.TestCase):
             alpha.checked_body('const broken = new Function("return 7");')
         with self.assertRaises(ValueError):
             alpha.extract_model_code({"not_code": snippet})
+
+    def test_modal_quality_review_recovers_generic_model_demo(self):
+        self.roadmap["goals"][0]["goal"] = "Create an interactive source review tool"
+        alpha.write_json(self.root / "alpha-agent/roadmap.json", self.roadmap)
+        state = dict(self.state)
+        state.update(completed=["source-review"], successful_iterations=1, attempts=1)
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        legacy = (
+            "const button = document.createElement('button'); "
+            "button.textContent = 'Click Me'; "
+            "button.addEventListener('click', () => { alert('Button clicked!'); }); "
+            "root.appendChild(button);"
+        )
+        target = self.root / "alpha-agent/features/source-review.js"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            '"use strict";\\nwindow.CivicLab.register("source-review", "Source review", '
+            'function (root, context) {\\n'
+            '  /* ALPHA GENERATED START */\\n' + legacy +
+            '\\n  /* ALPHA GENERATED END */\\n});\\n',
+            encoding="utf-8",
+        )
+        task = alpha.select_goal(self.root)
+        self.assertEqual(task["id"], "quality-modal-source-review")
+        repaired = alpha.quality_repair_body(legacy)
+        self.assertNotIn("alert(", repaired)
+        self.assertIn("addEventListener", repaired)
+        self.assertIn("aria-expanded", repaired)
+        alpha.write_json(self.root / "artifacts/alpha-plan.json", {
+            "task": task, "connections": ["DOM"], "steps": ["Repair alert demo"],
+            "risks": ["Not an official service"],
+        })
+        with patch.object(alpha, "model_request",
+                          return_value={"invalid_response": True}) as inference:
+            alpha.synthesize(self.root)
+        self.assertEqual(inference.call_count, 2)
+        self.assertIn("aria-expanded", target.read_text())
+        self.assertNotIn("alert(", target.read_text())
+        pending = alpha.read_json(self.root / "alpha-agent/state.json")["pending"]
+        self.assertEqual(pending["id"], "quality-modal-source-review")
 
     def test_live_behavior_smoke_flags_missing_interaction_after_publication(self):
         from unittest.mock import patch
