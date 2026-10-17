@@ -1,20 +1,15 @@
 {
   "schema_version": 1,
   "completed": [
-    "connections-map"
+    "connections-map",
+    "progress-steps"
   ],
   "blocked": [],
   "attempts": 4,
-  "successful_iterations": 2,
+  "successful_iterations": 3,
   "review_count": 1,
-  "last_good_sha": "0e16141e83b2904350fba17a7dd085368850ba03",
+  "last_good_sha": "45ee14f1dcf611d3c2c41da5310892381dfceff2",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 4,
-  "pending": {
-    "id": "progress-steps",
-    "target": "progress-steps",
-    "kind": "new",
-    "title": "Interactive local progress checklist"
-  }
+  "period_attempts": 4
 }
