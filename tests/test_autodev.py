@@ -72,6 +72,29 @@ class AutoDevTests(unittest.TestCase):
         self.assertIn('FLAG = True', (self.root / 'scripts/sample.py').read_text())
         self.assertEqual(json.loads((self.root / '.github/autodev/progress.json').read_text())['completed'], ['test'])
 
+    def test_secret_free_test_log_can_drive_one_repair_without_double_advancing(self):
+        from unittest.mock import patch
+        diagnostic = self.root / 'artifacts/autodev-first-gates.txt'
+        diagnostic.parent.mkdir()
+        diagnostic.write_text('FAIL: AssertionError: False is not True\\n', encoding='utf-8')
+        marker = self.root / '.github/autodev/progress.json'
+        marker.write_text(json.dumps({'completed': ['test']}), encoding='utf-8')
+        proposal = json.dumps({'edits': [
+            {'path': 'scripts/sample.py', 'old': 'False', 'new': 'True'},
+            {'path': 'tests/test_sample.py', 'old': 'assert True', 'new': 'assert 1 == 1'},
+        ]})
+        with patch.object(autodev, 'infer', return_value=(proposal, 'fake')) as inference:
+            autodev.repair(self.root)
+        self.assertIn('AssertionError', inference.call_args[0][0])
+        self.assertEqual(json.loads(marker.read_text())['completed'], ['test'])
+        self.assertIn('FLAG = True', (self.root / 'scripts/sample.py').read_text())
+
+    def test_repair_does_not_run_without_diagnostic_evidence(self):
+        marker = self.root / '.github/autodev/progress.json'
+        marker.write_text(json.dumps({'completed': ['test']}), encoding='utf-8')
+        with self.assertRaises(ValueError):
+            autodev.repair(self.root)
+
     def test_only_python_source_and_test_tasks(self):
         with self.assertRaises(ValueError):
             autodev.validate_task({'files': ['.github/workflows/deploy-pages.yml', 'tests/test_sample.py']})
