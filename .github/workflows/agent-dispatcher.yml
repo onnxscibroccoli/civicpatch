@@ -1,0 +1,40 @@
+name: Agent dispatcher (bounded state machine)
+
+on:
+  schedule:
+    - cron: "19 2,8,14,20 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: civicpatch-orchestrator-entry
+  cancel-in-progress: false
+
+jobs:
+  schedule:
+    if: github.repository == 'onnxscibroccoli/civicpatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      HUMAN_IN_THE_LOOP: "false"
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Ensure no open agent proposal is already being evaluated
+        id: admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          count="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --head automation/autodev-next --json number --jq 'length')"
+          if [ "$count" -gt 0 ]; then
+            echo "admit=false" >> "$GITHUB_OUTPUT"
+            echo "Existing agent candidate is still open; no duplicate dispatch."
+          else
+            echo "admit=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Dispatch task ingestion exactly once
+        if: steps.admission.outputs.admit == 'true'
+        run: gh workflow run agent-task-ingest.yml --repo "$GITHUB_REPOSITORY" --ref main
