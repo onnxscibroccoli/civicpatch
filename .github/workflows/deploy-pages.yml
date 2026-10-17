@@ -12,40 +12,74 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    if: github.repository == 'onnxscibroccoli/civicpatch'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
-      - name: Check out repository
+      - name: Check out immutable production main
         uses: actions/checkout@v4
-      - name: Set up Python for smoke tests
-        uses: actions/setup-python@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate required public files
+      - name: Validate production assets and tests before any upload
+        shell: bash
         run: |
-          set -eu
+          set -euo pipefail
           test -s index.html
           test -s README.md
           test -s LICENSE
           test -s CONTRIBUTING.md
-          test -s docs/ROADMAP.md
-          test -s docs/DATA-AND-TRUST.md
-          grep -q 'CivicPatch' index.html
+          test -s data/ma/municipalities.json
           grep -q 'not a fully verified Massachusetts-wide service' index.html
-      - name: Run smoke tests
-        run: python -m unittest discover -s tests -v
-      - name: Read existing Pages configuration
-        uses: actions/configure-pages@v5
-      - name: Upload site
+          python3 -m unittest discover -s tests -v
+          python3 scripts/validate_ma_directory.py
+      - name: Resolve alpha and beta stage commits if published
+        id: preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          for stage in alpha beta; do
+            if git fetch --quiet --no-tags --depth=1 origin "refs/heads/agent/$stage:refs/remotes/origin/agent/$stage"; then
+              sha="$(git rev-parse "refs/remotes/origin/agent/$stage^{commit}")"
+              [[ "$sha" =~ ^[a-f0-9]{40}$ ]] || exit 1
+              echo "$stage=$sha" >> "$GITHUB_OUTPUT"
+            else
+              echo "No agent/$stage branch; leaving /$stage unpublished."
+            fi
+          done
+      - name: Assemble production plus labeled non-indexed preview directories
+        env:
+          ALPHA: ${{ steps.preview.outputs.alpha }}
+          BETA: ${{ steps.preview.outputs.beta }}
+        run: python3 scripts/build_pages_bundle.py --output "$RUNNER_TEMP/civicpatch-site" --alpha "$ALPHA" --beta "$BETA"
+      - name: Verify bundled output and preview route requirements
+        env:
+          ALPHA: ${{ steps.preview.outputs.alpha }}
+          BETA: ${{ steps.preview.outputs.beta }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$RUNNER_TEMP/civicpatch-site/index.html"
+          test -s "$RUNNER_TEMP/civicpatch-site/data/ma/municipalities.json"
+          if [ -n "$ALPHA" ]; then test -s "$RUNNER_TEMP/civicpatch-site/alpha/index.html"; fi
+          if [ -n "$BETA" ]; then test -s "$RUNNER_TEMP/civicpatch-site/beta/index.html"; fi
+          test ! -e "$RUNNER_TEMP/civicpatch-site/.github"
+          test ! -e "$RUNNER_TEMP/civicpatch-site/scripts"
+      - uses: actions/configure-pages@v5
+      - name: Upload sanitized Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
-      - name: Deploy to GitHub Pages
+          path: ${{ runner.temp }}/civicpatch-site
+      - name: Publish production and available previews atomically
         id: deployment
         uses: actions/deploy-pages@v4
