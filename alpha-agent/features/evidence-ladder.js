@@ -1,0 +1,6 @@
+"use strict";
+window.CivicLab.register("evidence-ladder", "Explain evidence quality", function (root, context) {
+  /* ALPHA GENERATED START */
+const container = document.createElement('div'); container.className = 'container'; const title = document.createElement('h2'); title.textContent = 'Candidate vs. Reviewed vs. Verified Evidence'; container.appendChild(title); const candidateButton = document.createElement('button'); candidateButton.textContent = 'Candidate'; candidateButton.addEventListener('click', () => { const p = document.createElement('p'); p.textContent = 'This is a candidate evidence.'; container.replaceChildren(p); }); container.appendChild(candidateButton); const reviewedButton = document.createElement('button'); reviewedButton.textContent = 'Reviewed'; reviewedButton.addEventListener('click', () => { const p = document.createElement('p'); p.textContent = 'This is a reviewed evidence.'; container.replaceChildren(p); }); container.appendChild(reviewedButton); const verifiedButton = document.createElement('button'); verifiedButton.textContent = 'Verified'; verifiedButton.addEventListener('click', () => { const p = document.createElement('p'); p.textContent = 'This is a verified evidence.'; container.replaceChildren(p); }); container.appendChild(verifiedButton); root.appendChild(container);
+  /* ALPHA GENERATED END */
+});

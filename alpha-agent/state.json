@@ -5,11 +5,17 @@
     "progress-steps"
   ],
   "blocked": [],
-  "attempts": 5,
+  "attempts": 6,
   "successful_iterations": 4,
   "review_count": 2,
   "last_good_sha": "4c57714c1c505cf8d842418b1cdb6686c16e979c",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 5
+  "period_attempts": 6,
+  "pending": {
+    "id": "evidence-ladder",
+    "target": "evidence-ladder",
+    "kind": "new",
+    "title": "Explain evidence quality"
+  }
 }
