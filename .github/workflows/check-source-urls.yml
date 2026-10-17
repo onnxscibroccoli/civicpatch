@@ -7,7 +7,7 @@ on:
       - "data/ma/municipalities.json"
       - "scripts/check_source_urls.py"
       - ".github/workflows/check-source-urls.yml"
-      - "tests/**"
+      - "tests/test_source_url_health.py"
   schedule:
     - cron: "7 12 * * *"
   workflow_dispatch:
