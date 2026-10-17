@@ -162,6 +162,50 @@ class AlphaAgentTests(unittest.TestCase):
         self.assertEqual(goal["id"], "quality-interaction-source-review")
         self.assertIn("event listener", goal["goal"])
 
+    def test_audited_fallback_repairs_undeliverable_interactive_model_feature(self):
+        self.roadmap["goals"][0]["goal"] = "Create an interactive source review tool"
+        alpha.write_json(self.root / "alpha-agent/roadmap.json", self.roadmap)
+        state = dict(self.state)
+        state.update(completed=["source-review"], successful_iterations=1,
+                     attempts=1, blocked=[{
+                         "id": "quality-interaction-source-review", "target": "source-review",
+                         "attempt": 1, "reason": "Model omitted code"
+                     }])
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        original = self.root / "alpha-agent/features/source-review.js"
+        original.parent.mkdir(parents=True)
+        original.write_text(alpha.wrap_feature(
+            {"target": "source-review", "title": "Source review"},
+            'const p = document.createElement("p"); p.textContent = "Read sources"; root.appendChild(p);',
+        ))
+        task = alpha.select_goal(self.root)
+        self.assertEqual(task["id"], "quality-interaction-source-review")
+        alpha.write_json(self.root / "artifacts/alpha-plan.json",
+                         {"task": task, "connections": ["DOM"], "steps": ["Add interaction"],
+                          "risks": []})
+        with patch.object(alpha, "model_request",
+                          return_value={"wrong_schema": "no code"}) as inference:
+            result = alpha.synthesize(self.root)
+        self.assertEqual(inference.call_count, 2)
+        source = result.read_text()
+        self.assertIn("addEventListener", source)
+        self.assertIn('aria-expanded', source)
+        self.assertIn('These connections are illustrative and unverified', source)
+        self.assertEqual(alpha.read_json(self.root / "alpha-agent/state.json")["attempts"], 2)
+
+    def test_extract_model_code_accepts_constrained_key_variants(self):
+        snippet = 'const p = document.createElement("p"); p.textContent = "Ready"; root.appendChild(p);'
+        self.assertEqual(alpha.extract_model_code({"javascript": snippet}), snippet)
+        callback = (
+            'const b = document.createElement("button"); root.appendChild(b); '
+            'b.addEventListener("click", function () { b.textContent = "Opened"; });'
+        )
+        self.assertEqual(alpha.checked_body(callback), callback)
+        with self.assertRaises(ValueError):
+            alpha.checked_body('const broken = new Function("return 7");')
+        with self.assertRaises(ValueError):
+            alpha.extract_model_code({"not_code": snippet})
+
     def test_live_behavior_smoke_flags_missing_interaction_after_publication(self):
         from unittest.mock import patch
         self.roadmap["goals"][0]["goal"] = "Create an interactive source review tool"
