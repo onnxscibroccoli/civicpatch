@@ -1,0 +1,45 @@
+name: Agent task ingestion
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: civicpatch-autodev-queue
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    if: github.repository == 'onnxscibroccoli/civicpatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate issue ingestion before processing untrusted GitHub content
+        run: python3 -m unittest discover -s tests -p 'test_agent_task_ingest.py' -v
+      - name: Accept only structured, maintainer-authorized and allowlisted issue tasks
+        run: python3 scripts/agent_task_ingest.py
+      - name: Persist bounded new tasks only when manifest changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- .github/autodev/tasks.json; then
+            git diff --check
+            git add .github/autodev/tasks.json
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'chore(agent): ingest bounded maintainer issue tasks'
+            git push origin HEAD:main
+          fi
+      - name: Dispatch code synthesis for next pending task
+        run: gh workflow run bounded-autodev.yml --repo "$GITHUB_REPOSITORY" --ref main
