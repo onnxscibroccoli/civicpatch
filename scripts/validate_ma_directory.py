@@ -74,7 +74,7 @@ def validate():
         errors.append("verified_records must be a non-negative integer")
     if not is_date(coverage.get("generated_at")):
         errors.append("coverage.generated_at must be an ISO date")
-    if coverage.get("status") not in {"not_started", "in_progress", "review_required", "coverage_target_met"}:
+    if coverage.get("status") not in {"not_started", "in_progress", "review_required", "coverage_target_met", "unverified"}:
         errors.append("coverage.status is invalid")
 
     seen_ids, seen_town_ids, seen_ocd_ids = set(), set(), set()

@@ -29,7 +29,7 @@ class MassachusettsDirectoryTests(unittest.TestCase):
         self.assertEqual(coverage["records_present"], len(records))
         self.assertEqual(coverage["verified_records"], sum(r.get("record_status") == "verified" for r in records))
         self.assertLessEqual(len(records), 351)
-        self.assertIn(coverage["status"], {"not_started", "review_required", "in_progress", "coverage_target_met"})
+        self.assertIn(coverage["status"], {"not_started", "review_required", "in_progress", "coverage_target_met", "unverified"})
         if len(records) == 0:
             self.assertEqual(coverage["status"], "not_started")
         if len(records) > 0:
