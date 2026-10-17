@@ -11,7 +11,7 @@
       "reason": "Planner retry after: JSONDecodeError\n{\"task\": \"quality-interaction-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel syntax/contract proposal rejected ('code'); retrying once.\nAlpha agent stopped safely: KeyError: 'code'"
     }
   ],
-  "attempts": 2,
+  "attempts": 3,
   "successful_iterations": 1,
   "review_count": 0,
   "last_good_sha": "2c457f6aa57d84bd29197a7429aa9bdb35a383e1",
@@ -20,5 +20,11 @@
     "reason": "Planner retry after: JSONDecodeError\n{\"task\": \"quality-interaction-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel syntax/contract proposal rejected ('code'); retrying once.\nAlpha agent stopped safely: KeyError: 'code'"
   },
   "period": "2026-10",
-  "period_attempts": 2
+  "period_attempts": 3,
+  "pending": {
+    "id": "quality-interaction-connections-map",
+    "target": "connections-map",
+    "kind": "review",
+    "title": "Accessible dependency map"
+  }
 }
