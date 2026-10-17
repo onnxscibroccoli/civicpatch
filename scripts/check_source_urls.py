@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "ma" / "municipalities.json"
@@ -18,8 +18,17 @@ USER_AGENT = "CivicPatch-LinkHealth/1.0 (+https://github.com/onnxscibroccoli/civ
 
 
 def is_public_http_url(url):
-    parsed = urlparse(url or "")
-    if parsed.scheme not in ("http", "https") or not parsed.hostname or parsed.username or parsed.password:
+    """Reject private destinations, credentials, and unsupported URL schemes.
+
+    DNS is checked prior to each request/redirect, but this is not DNS pinning:
+    only run the checker on an isolated, unprivileged CI runner.
+    """
+    try:
+        parsed = urlparse(url or "")
+        if parsed.scheme not in ("http", "https") or not parsed.hostname or parsed.username or parsed.password:
+            return False
+        port = parsed.port or (443 if parsed.scheme == "https" else 80)
+    except ValueError:  # Malformed IPv6 bracket or port.
         return False
     try:
         ip = ipaddress.ip_address(parsed.hostname)
@@ -29,9 +38,11 @@ def is_public_http_url(url):
         if host in {"localhost", "localhost.localdomain"} or host.endswith((".local", ".internal", ".test", ".invalid")):
             return False
         try:
-            addresses = {item[4][0] for item in socket.getaddrinfo(host, parsed.port or (443 if parsed.scheme == "https" else 80), type=socket.SOCK_STREAM)}
+            addresses = {item[4][0] for item in socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)}
         except OSError:
             return True  # Let the request report DNS/network failure, rather than misclassifying it as unsafe.
+        if not addresses:
+            return False
         for address in addresses:
             try:
                 if not ipaddress.ip_address(address).is_global:
@@ -41,14 +52,27 @@ def is_public_http_url(url):
         return True
 
 
+class UnsafeRedirectError(ValueError):
+    """Raised before an HTTP redirect follows a non-public destination."""
+
+
+class PublicOnlyRedirectHandler(HTTPRedirectHandler):
+    """Apply URL screening before every redirect, not just the original URL."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not is_public_http_url(newurl):
+            raise UnsafeRedirectError("redirect target is not an allowed public HTTP(S) URL")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
 def probe(url):
     if not is_public_http_url(url):
         return {"url": url, "status": "manual_review", "http_status": None, "final_url": None, "error": "URL is not an allowed public HTTP(S) destination"}
     headers = {"User-Agent": USER_AGENT, "Accept": "text/html,application/json,*/*"}
+    opener = build_opener(PublicOnlyRedirectHandler())
     for method in ("HEAD", "GET"):
         try:
             request = Request(url, headers=headers, method=method)
-            with urlopen(request, timeout=TIMEOUT) as response:
+            with opener.open(request, timeout=TIMEOUT) as response:
                 code = response.getcode()
                 final_url = response.geturl()
                 if method == "GET":
@@ -60,6 +84,8 @@ def probe(url):
                     "final_url": final_url,
                     "error": None,
                 }
+        except UnsafeRedirectError as exc:
+            return {"url": url, "status": "manual_review", "http_status": None, "final_url": None, "error": str(exc)[:300]}
         except HTTPError as exc:
             if method == "HEAD" and exc.code in (405, 501):
                 continue
