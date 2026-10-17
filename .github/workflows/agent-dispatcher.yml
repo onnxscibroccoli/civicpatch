@@ -6,7 +6,7 @@ on:
     paths:
       - ".github/workflows/agent-dispatcher.yml"
   schedule:
-    - cron: "19 2,8,14,20 * * *"
+    - cron: "41 1,7,13,19 * * *"
   workflow_dispatch:
 
 permissions:
