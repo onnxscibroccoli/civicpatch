@@ -67,6 +67,29 @@ class URLHealthTests(unittest.TestCase):
             with self.subTest(value=value):
                 self.assertFalse(module.is_public_http_url(value))
 
+    def test_transient_network_failures_are_not_permanent_broken_links(self):
+        from urllib.error import HTTPError, URLError
+
+        url = "https://example.org/"
+        with patch.object(module, "is_public_http_url", return_value=True), patch.object(module, "build_opener") as builder:
+            for error, expected in (
+                (HTTPError(url, 404, "Not Found", {}, None), "broken"),
+                (HTTPError(url, 410, "Gone", {}, None), "broken"),
+                (HTTPError(url, 503, "Unavailable", {}, None), "transient_error"),
+                (HTTPError(url, 429, "Too Many Requests", {}, None), "transient_error"),
+                (HTTPError(url, 403, "Forbidden", {}, None), "manual_review"),
+                (URLError("DNS temporarily unavailable"), "transient_error"),
+                (TimeoutError("timeout"), "transient_error"),
+            ):
+                with self.subTest(error=str(error)):
+                    builder.return_value.open.side_effect = error
+                    report = module.probe(url)
+                    self.assertEqual(report["status"], expected)
+                    if isinstance(error, HTTPError):
+                        self.assertEqual(report["http_status"], error.code)
+                    else:
+                        self.assertIsNone(report["http_status"])
+
     def test_reachability_report_does_not_mutate_verification(self):
         self.assertIn("never changes record_status or verification_status", SCRIPT.read_text(encoding="utf-8"))
 
