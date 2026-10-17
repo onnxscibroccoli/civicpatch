@@ -4,11 +4,17 @@
     "connections-map"
   ],
   "blocked": [],
-  "attempts": 3,
+  "attempts": 4,
   "successful_iterations": 2,
   "review_count": 1,
   "last_good_sha": "0e16141e83b2904350fba17a7dd085368850ba03",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 3
+  "period_attempts": 4,
+  "pending": {
+    "id": "progress-steps",
+    "target": "progress-steps",
+    "kind": "new",
+    "title": "Interactive local progress checklist"
+  }
 }
