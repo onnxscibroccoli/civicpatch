@@ -1,18 +1,12 @@
 name: Bounded agentic CivicPatch development
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/bounded-autodev.yml'
-  schedule:
-    # Four distributed cycles daily, at off-hour UTC minutes. At most 4 x 15 min/day.
-    - cron: "19 2,8,14,20 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 concurrency:
   group: civicpatch-bounded-autodev
@@ -131,7 +125,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           branch: automation/autodev-next
-          delete-branch: true
+          delete-branch: false
           draft: true
           add-paths: |
             scripts/check_source_urls.py
@@ -147,6 +141,18 @@ jobs:
             Automated **draft** generated from the curated task queue in `.github/autodev/tasks.json`.
             Scope is limited to two reviewed Python files and one progress marker.
             `unittest` and municipality validation passed inside the workflow before this PR was opened.
-            **Do not merge without checking the patch, provenance, security and accessibility impact.**
+            Machine gatekeeper re-runs independent CI gates with no LLM credentials. Only reviewed-scope script and test edits are eligible for automatic promotion.
             Merging the progress marker advances the next six-hour cycle to the next task.
-            No automatic production deployment or PR merge is authorized.
+            Dynamic workflow/self-modification, public data records and deployments are outside the allowlist.
+      - name: Dispatch independent gatekeeper for generated draft
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="$(gh pr list --repo "$GITHUB_REPOSITORY" --head automation/autodev-next --state open --json number,headRefOid --jq '.[0] | [(.number|tostring),.headRefOid] | @tsv')"
+          test -n "$result"
+          read -r number head_sha <<< "$result"
+          [[ "$number" =~ ^[0-9]+$ ]] && [[ "$head_sha" =~ ^[a-f0-9]{40}$ ]]
+          gh workflow run agent-gatekeeper.yml --repo "$GITHUB_REPOSITORY" --ref main -f pr_number="$number" -f expected_sha="$head_sha"
