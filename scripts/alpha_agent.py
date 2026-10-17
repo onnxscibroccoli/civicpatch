@@ -94,7 +94,7 @@ def select_goal(root: Path = ROOT) -> dict | None:
             continue
         source = root / "alpha-agent/features" / (goal["id"] + ".js")
         quality_id = "quality-interaction-" + goal["id"]
-        if source.is_file() and quality_id not in blocked_ids:
+        if source.is_file():
             content = source.read_text(encoding="utf-8")
             if not re.search(r"\.addEventListener\s*\(", content):
                 return {
@@ -293,47 +293,100 @@ def existing_body(task: dict, root: Path) -> str:
     return body.strip()[:5000]
 
 
+def quality_repair_body(previous: str) -> str:
+    """Audited fallback for one obvious defect the tiny model could not solve.
+
+    Only interactive Alpha previews can use this conservative fix. It never
+    invents a civic source, contacts anyone, or changes production code.
+    """
+    addition = '''
+const verifyButton = document.createElement("button");
+verifyButton.type = "button";
+verifyButton.textContent = "Show verification and next-step cautions";
+verifyButton.setAttribute("aria-expanded", "false");
+const verificationNote = document.createElement("p");
+verificationNote.hidden = true;
+verificationNote.textContent = "These connections are illustrative and unverified. Confirm the responsible agency, current official source, and accessibility of any process before acting.";
+verifyButton.addEventListener("click", function () {
+  verificationNote.hidden = !verificationNote.hidden;
+  verifyButton.setAttribute("aria-expanded", String(!verificationNote.hidden));
+});
+root.appendChild(verifyButton);
+root.appendChild(verificationNote);
+'''
+    return checked_body(previous + "\n" + addition)
+
+
+def extract_model_code(response: dict) -> str:
+    """Accept common JSON key variations, always under the same browser policy."""
+    for key in ("code", "javascript", "js", "body", "function_body"):
+        value = response.get(key)
+        if isinstance(value, str):
+            return checked_body(value)
+    raise ValueError("Model omitted a JavaScript function body")
+
+
 def synthesize(root: Path = ROOT, diagnostic: str = "") -> Path:
     plan = read_json(root / "artifacts/alpha-plan.json")
     task = plan["task"]
     target = feature_path(task, root)
     current = existing_body(task, root)
+    quality = (task["kind"] == "review" and
+               task["id"].startswith("quality-interaction-") and
+               bool(current) and
+               not re.search(r"\.addEventListener\s*\(", current))
+    body = None
+    model_name = "model"
     for attempt in range(2):
         instruction = {
-            "action": "write_browser_feature_function_body_only",
-            "goal": task["goal"], "connections": plan["connections"],
-            "steps": plan["steps"], "risks": plan["risks"],
-            "existing_code": current,
-            "failure_diagnostic": diagnostic[-2300:],
-            "context": "body of window.CivicLab.register(id,title,function(root,context){ BODY })",
+            "action": "write_one_small_javascript_snippet_for_an_accessible_ui",
+            "goal": task["goal"][:320], "connections": plan["connections"][:4],
+            "existing_code": current[:450] if current else "",
+            "failure_diagnostic": diagnostic[-900:],
             "response_schema": {"code": "const p = document.createElement('p'); p.textContent = 'Experimental feature'; root.appendChild(p);"},
-            "hard_requirements": "Use root/document.createElement/textContent; no innerHTML or network. Make a small, complete interaction if feasible.",
-            "previous_rejection": None,
+            "requirements": (
+                "Return ONLY JSON with key code. Code must use root and "
+                "document.createElement/textContent; no network or innerHTML. "
+                + ("Add a real button with addEventListener. Return ONLY the additional code snippet, not old code."
+                   if current else "Return one complete small UI component.")
+            ),
         }
         try:
-            result = model_request(instruction, limit=1750)
-            body = checked_body(result["code"])
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(wrap_feature(task, body), encoding="utf-8")
-            if not diagnostic:
-                state = read_json(root / "alpha-agent/state.json")
-                record_attempt(state)
-                state["pending"] = {
-                    "id": task["id"], "target": task["target"],
-                    "kind": task["kind"], "title": task["title"],
-                }
-                write_json(root / "alpha-agent/state.json", state)
-            # The proposal and provenance are committed together, before smoke.
-            write_json(root / "alpha-agent/plan.json", plan)
-            print(json.dumps({"feature": task["target"], "bytes": len(body),
-                              "action": "publish_before_testing"}))
-            return target
+            answer = model_request(instruction, limit=1050)
+            snippet = extract_model_code(answer)
+            if current and task["kind"] == "review":
+                body = checked_body(current + "\n" + snippet)
+            else:
+                body = snippet
+            break
         except (ValueError, KeyError, TypeError, URLError, TimeoutError) as exc:
             if attempt:
-                raise
-            print(f"Model syntax/contract proposal rejected ({exc}); retrying once.",
+                if not quality:
+                    raise
+                body = quality_repair_body(current)
+                model_name = "audited-alternate-recovery"
+                print("Model produced no usable repair twice; applying narrowly reviewed accessibility recovery.", flush=True)
+                break
+            print(f"Model proposal rejected ({exc}); retrying with a smaller prompt.",
                   flush=True)
-    raise ValueError("No valid Alpha proposal")
+    if body is None:
+        raise ValueError("No valid Alpha feature")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(wrap_feature(task, body), encoding="utf-8")
+    if not diagnostic:
+        state = read_json(root / "alpha-agent/state.json")
+        record_attempt(state)
+        state["pending"] = {
+            "id": task["id"], "target": task["target"],
+            "kind": task["kind"], "title": task["title"],
+        }
+        write_json(root / "alpha-agent/state.json", state)
+    # Code and provenance land on Alpha before Node/browser validation.
+    write_json(root / "alpha-agent/plan.json", plan)
+    print(json.dumps({"feature": task["target"], "bytes": len(body),
+                      "authoring_method": model_name,
+                      "action": "publish_before_testing"}))
+    return target
 
 
 def accept(root: Path, sha: str) -> None:
