@@ -2,20 +2,15 @@
   "schema_version": 1,
   "completed": [
     "connections-map",
-    "progress-steps"
+    "progress-steps",
+    "evidence-ladder"
   ],
   "blocked": [],
   "attempts": 6,
-  "successful_iterations": 4,
+  "successful_iterations": 5,
   "review_count": 2,
-  "last_good_sha": "4c57714c1c505cf8d842418b1cdb6686c16e979c",
+  "last_good_sha": "9e73f33a62308bbf8a52abb2cd18ee27b5cedf04",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 6,
-  "pending": {
-    "id": "evidence-ladder",
-    "target": "evidence-ladder",
-    "kind": "new",
-    "title": "Explain evidence quality"
-  }
+  "period_attempts": 6
 }
