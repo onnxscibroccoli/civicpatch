@@ -194,7 +194,10 @@ def audited_recipe(task: dict) -> dict | None:
                     builder.return_value.open.side_effect = error
                     report = module.probe(url)
                     self.assertEqual(report["status"], expected)
-                    self.assertIsNone(report["http_status"] if isinstance(error, (URLError, TimeoutError)) else None)
+                    if isinstance(error, HTTPError):
+                        self.assertEqual(report["http_status"], error.code)
+                    else:
+                        self.assertIsNone(report["http_status"])
 
     def test_reachability_report_does_not_mutate_verification(self):''',
         },
