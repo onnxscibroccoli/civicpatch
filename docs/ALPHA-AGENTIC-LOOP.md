@@ -9,7 +9,7 @@ This is the GitHub-hosted experimental frontend engine for CivicPatch. It is a *
 - Agentic lab: https://onnxscibroccoli.github.io/civicpatch/alpha/agentic/
 - Maturing Beta lab: https://onnxscibroccoli.github.io/civicpatch/beta/agentic/
 
-Alpha and Beta are separately labeled and not indexed. The lab applies restrictive Content Security Policy and has no submission backend.
+The Alpha lab additionally displays its curated roadmap, completed goals, number of checked development increments and self-review count. The Pages builder escapes every title before rendering; after successful Alpha acceptance, Actions explicitly republishes updated state so the counters become visible.\n\nAlpha and Beta are separately labeled and not indexed. The lab applies restrictive Content Security Policy and has no submission backend.
 
 ## Scheduled GitHub Actions state machine
 
@@ -19,7 +19,7 @@ GitHub Actions starts the Alpha model workflow at **03:47 and 15:47 UTC**, as we
 2. The next approved UI goal is selected from alpha-agent/roadmap.json and the persistent branch state. The model plans required connections, intermediate steps and risks. It is forbidden from enabling unapproved external integrations.
 3. The model generates a small, independent, accessible JavaScript feature module. Strict validation rejects large or unexpected output, network-capable APIs, HTML injection and modifications outside the experimental browser feature contract.
 4. The agent **commits and publishes the experimental feature before testing it**. It dispatches the existing GitHub Pages workflow and reads the exact run identifier from GitHub's workflow dispatch API.
-5. **After Pages finishes**, a lightweight smoke verifies the live Alpha lab is serving the expected commit and feature source; Node checks JavaScript syntax. This is not a comprehensive browser, functional or WCAG audit.
+5. **After Pages finishes**, a lightweight smoke verifies the live Alpha lab is serving the expected commit and feature source; Node checks JavaScript syntax. When the task explicitly promises interactivity, the agent also checks for a real event handler and requests model repair if none is present. This is not a comprehensive browser, functional or WCAG audit.
 6. On a detected problem, the model sees the actual diagnostic and gets one bounded repair cycle: change the feature, republish, and smoke again. If recovery fails, the agent reverts the experiment, republishes the previous Alpha and records the failed goal for later reconsideration.
 7. Success advances persistent state. Every three successful increments the verified frontend is copied to agent/beta-frontend, and the next cycle schedules model-assisted review and improvement of a previous experiment rather than only adding features.
 
