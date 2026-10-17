@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 17
     env:
       HUMAN_IN_THE_LOOP: "false"
-      CIVICPATCH_ALPHA_ROOT: ${{ runner.temp }}/civicpatch-alpha
+      CIVICPATCH_ALPHA_ROOT: /tmp/civicpatch-alpha
       GH_TOKEN: ${{ github.token }}
       CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
       CIVICPATCH_LLM_API_URL: ${{ vars.CIVICPATCH_LLM_API_URL }}
