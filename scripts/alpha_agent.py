@@ -19,7 +19,7 @@ from urllib.request import Request, urlopen
 
 from autodev import post_json
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(os.getenv("CIVICPATCH_ALPHA_ROOT", Path(__file__).resolve().parents[1])).resolve()
 LAB = ROOT / "alpha-agent"
 STATE = LAB / "state.json"
 ROADMAP = LAB / "roadmap.json"
