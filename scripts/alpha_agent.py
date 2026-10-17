@@ -95,10 +95,18 @@ def select_goal(root: Path = ROOT) -> dict | None:
         if goal["id"] not in completed and goal["id"] not in blocked:
             return {**goal, "target": goal["id"], "kind": "new"}
     # Previously blocked goals receive a bounded later retry after other goals.
+    deferred = []
     for goal in goals:
         if goal["id"] not in completed and goal["id"] in blocked:
+            deferred.append(goal)
             if state["attempts"] - blocked[goal["id"]]["attempt"] >= 2:
                 return {**goal, "target": goal["id"], "kind": "recovery"}
+    # When every curated goal has been tried, time itself is the retry budget:
+    # revisit the least-recent failure on the next scheduled run. Otherwise
+    # failures would freeze attempts at a constant value forever.
+    if deferred and not any(g["id"] not in completed for g in goals if g["id"] not in blocked):
+        oldest = min(deferred, key=lambda goal: blocked[goal["id"]]["attempt"])
+        return {**oldest, "target": oldest["id"], "kind": "recovery"}
     if len(completed) >= MAX_FEATURES:
         return None
     return {
