@@ -78,7 +78,33 @@ jobs:
           git diff --binary -- scripts/check_source_urls.py tests/test_source_url_health.py scripts/validate_ma_directory.py tests/test_ma_directory.py scripts/report_ma_coverage.py tests/test_ma_coverage_report.py .github/autodev/progress.json > artifacts/autodev.patch
           test -s artifacts/autodev.patch
           echo 'Candidate patch captured without executing any model-provided shell commands.'
-      - name: Run offline regression tests and directory integrity checks
+      - name: First secret-free test gate (capture bounded error diagnostics)
+        if: steps.gate.outputs.run == 'true'
+        id: first_tests
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          if {
+            python3 -m unittest discover -s tests -v &&
+            python3 scripts/validate_ma_directory.py &&
+            python3 scripts/report_ma_coverage.py
+          } > artifacts/autodev-first-gates.txt 2>&1; then
+            echo 'Initial regression gate passed.'
+          else
+            echo 'Initial regression gate failed; capturing the tail for model-assisted repair.'
+            tail -90 artifacts/autodev-first-gates.txt
+            exit 1
+          fi
+      - name: Repair candidate once using captured regression errors
+        if: steps.gate.outputs.run == 'true' && steps.first_tests.outcome == 'failure'
+        env:
+          CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
+          CIVICPATCH_LLM_API_URL: ${{ vars.CIVICPATCH_LLM_API_URL }}
+          CIVICPATCH_LLM_MODEL: ${{ vars.CIVICPATCH_LLM_MODEL }}
+        run: python3 scripts/autodev.py repair
+      - name: Final secret-free regression gate
         if: steps.gate.outputs.run == 'true'
         shell: bash
         run: |
@@ -86,6 +112,10 @@ jobs:
           python3 -m unittest discover -s tests -v
           python3 scripts/validate_ma_directory.py
           python3 scripts/report_ma_coverage.py
+          git diff --check
+          # The artifact must reflect the final tested candidate, not a stale pre-repair patch.
+          git diff --binary -- scripts/check_source_urls.py tests/test_source_url_health.py scripts/validate_ma_directory.py tests/test_ma_directory.py scripts/report_ma_coverage.py tests/test_ma_coverage_report.py .github/autodev/progress.json > artifacts/autodev.patch
+          test -s artifacts/autodev.patch
       - name: Keep the candidate diff as a short-lived review artifact
         if: steps.gate.outputs.run == 'true' && always()
         uses: actions/upload-artifact@v4
