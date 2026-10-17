@@ -3,12 +3,22 @@
   "completed": [
     "connections-map"
   ],
-  "blocked": [],
-  "attempts": 1,
+  "blocked": [
+    {
+      "id": "quality-interaction-connections-map",
+      "target": "connections-map",
+      "attempt": 2,
+      "reason": "Planner retry after: JSONDecodeError\n{\"task\": \"quality-interaction-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel syntax/contract proposal rejected ('code'); retrying once.\nAlpha agent stopped safely: KeyError: 'code'"
+    }
+  ],
+  "attempts": 2,
   "successful_iterations": 1,
   "review_count": 0,
   "last_good_sha": "2c457f6aa57d84bd29197a7429aa9bdb35a383e1",
-  "last_failure": null,
+  "last_failure": {
+    "task": "quality-interaction-connections-map",
+    "reason": "Planner retry after: JSONDecodeError\n{\"task\": \"quality-interaction-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel syntax/contract proposal rejected ('code'); retrying once.\nAlpha agent stopped safely: KeyError: 'code'"
+  },
   "period": "2026-10",
-  "period_attempts": 1
+  "period_attempts": 2
 }
