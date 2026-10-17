@@ -34,10 +34,10 @@ MAX_MONTHLY_ATTEMPTS = 62
 UNSAFE = re.compile(
     r"\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|Worker|"
     r"sendBeacon|localStorage|sessionStorage|indexedDB|"
-    r"eval|Function|importScripts|document\.write|innerHTML|"
+    r"eval|importScripts|document\.write|innerHTML|"
     r"outerHTML|location|navigator|window|globalThis|postMessage|"
     r"serviceWorker|submit)\b|<script|https?://|"
-    r"\b(?:import|export)\s*(?:\(|[{\w])",
+    r"\bnew\s+Function\s*\(|\b(?:import|export)\s*(?:\(|[{\w])",
     re.I,
 )
 PROMPT_SYSTEM = """You are an accessibility-focused frontend engineer working in an experimental civic lab.
