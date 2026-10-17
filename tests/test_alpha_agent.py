@@ -143,6 +143,65 @@ class AlphaAgentTests(unittest.TestCase):
         self.assertIn(goal["target"], ("source-review", "keyboard-help"))
         self.assertTrue(goal["id"].startswith("maintenance-"))
 
+    def test_interactive_goal_without_listener_is_prioritized_for_repair(self):
+        self.roadmap["goals"][0]["goal"] = (
+            "Create an accessible interactive source review checklist"
+        )
+        alpha.write_json(self.root / "alpha-agent/roadmap.json", self.roadmap)
+        state = dict(self.state)
+        state.update(completed=["source-review"], successful_iterations=1, attempts=1)
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        path = self.root / "alpha-agent/features/source-review.js"
+        path.parent.mkdir(parents=True)
+        path.write_text(alpha.wrap_feature(
+            {"target": "source-review", "title": "Source review"},
+            'const p = document.createElement("p"); p.textContent = "Read sources"; root.appendChild(p);',
+        ))
+        goal = alpha.select_goal(self.root)
+        self.assertEqual(goal["kind"], "review")
+        self.assertEqual(goal["id"], "quality-interaction-source-review")
+        self.assertIn("event listener", goal["goal"])
+
+    def test_live_behavior_smoke_flags_missing_interaction_after_publication(self):
+        from unittest.mock import patch
+        self.roadmap["goals"][0]["goal"] = "Create an interactive source review tool"
+        alpha.write_json(self.root / "alpha-agent/roadmap.json", self.roadmap)
+        task = alpha.select_goal(self.root)
+        sha = "a" * 40
+        feature = alpha.wrap_feature(task,
+            'const p = document.createElement("p"); p.textContent = "Plain text"; root.appendChild(p);')
+        file = alpha.feature_path(task, self.root)
+        file.parent.mkdir(parents=True)
+        file.write_text(feature)
+        state = dict(self.state)
+        state["pending"] = {
+            "id": task["id"], "target": task["target"],
+            "kind": "new", "title": task["title"],
+        }
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        alpha.write_json(self.root / "alpha-agent/plan.json", {"task": task})
+        class Response:
+            status = 200
+            def __init__(self, content):
+                self.content = content
+            def __enter__(self):
+                return self
+            def __exit__(self, *_args):
+                return False
+            def read(self, _limit):
+                return self.content.encode("utf-8")
+        page = ('<html><meta name="civicpatch-frontend-sha" content="' + sha +
+                '"><script defer src="features/source-review.js"></script></html>')
+        with patch.object(alpha, "urlopen", side_effect=[
+            Response(page), Response(feature)
+        ]):
+            with self.assertRaisesRegex(ValueError, "Behavior smoke"):
+                alpha.check_live(
+                    self.root, sha,
+                    "https://onnxscibroccoli.github.io/civicpatch/",
+                    retries=1,
+                )
+
     def test_refuses_wrong_live_host_or_sha(self):
         with self.assertRaises(ValueError):
             alpha.check_live(self.root, "not-a-sha", "https://onnxscibroccoli.github.io/civicpatch/")
