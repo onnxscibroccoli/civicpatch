@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {
+      "id": "p0-redirect-boundaries",
+      "goal": "Issue #8: update URL-health probes so redirects to non-public HTTP(S) destinations are refused and marked manual_review rather than followed. Add mocked unit tests for redirection without making network requests; preserve candidate verification labels and normal valid redirect reporting.",
+      "files": [
+        "scripts/check_source_urls.py",
+        "tests/test_source_url_health.py"
+      ]
+    },
+    {
+      "id": "p0-url-network-failures",
+      "goal": "Issue #8: make URL-health report distinguish transient DNS/timeouts/network failures from confirmed HTTP 404/410 broken links. Preserve no-publish-on-unverified behavior and add isolated tests. No real network during tests.",
+      "files": [
+        "scripts/check_source_urls.py",
+        "tests/test_source_url_health.py"
+      ]
+    },
+    {
+      "id": "p0-probe-budget",
+      "goal": "Issue #8: introduce an optional bounded maximum URL probe count for link-health checks, keeping deterministic ordering and truthful checked/unchecked totals in the JSON report. Add isolated tests; do not reclassify unprobed records as verified.",
+      "files": [
+        "scripts/check_source_urls.py",
+        "tests/test_source_url_health.py"
+      ]
+    },
+    {
+      "id": "p1-validation-metadata",
+      "goal": "ROADMAP Stage 1: strengthen Massachusetts directory schema invariants with a focused defensive check and regression tests. Do not infer municipality service responsibility or mark records verified based on URL reachability.",
+      "files": [
+        "scripts/validate_ma_directory.py",
+        "tests/test_ma_directory.py"
+      ]
+    },
+    {
+      "id": "p1-coverage-reporting",
+      "goal": "ROADMAP Stage 1: add an accurate, separately labeled count of incomplete, stale, and unverified directory source candidates to coverage reporting, with deterministic regression tests. Do not suggest that a source is verified merely because reachable.",
+      "files": [
+        "scripts/report_ma_coverage.py",
+        "tests/test_ma_coverage_report.py"
+      ]
+    }
+  ]
+}

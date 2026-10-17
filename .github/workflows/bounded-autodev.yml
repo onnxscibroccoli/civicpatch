@@ -1,0 +1,122 @@
+name: Bounded agentic CivicPatch development
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bounded-autodev.yml'
+  schedule:
+    # Four distributed cycles daily, at off-hour UTC minutes. At most 4 x 15 min/day.
+    - cron: "19 2,8,14,20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: civicpatch-bounded-autodev
+  cancel-in-progress: false
+
+jobs:
+  develop:
+    if: github.repository == 'onnxscibroccoli/civicpatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out main with no persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check for pending review and next curated task
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$(gh pr list --repo "$GITHUB_REPOSITORY" --head automation/autodev-next --state open --json number --jq 'length')" != 0 ]]; then
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+            echo 'An agentic PR is waiting for review. Skipping inference.'
+          elif python3 scripts/autodev.py pending; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+            echo 'Curated milestone tasks complete.'
+          fi
+      - name: Start a small local open model only when no API key is configured
+        if: steps.gate.outputs.run == 'true'
+        env:
+          CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$CIVICPATCH_LLM_API_KEY" ]]; then
+            docker run -d --rm --name civicpatch-ollama -p 127.0.0.1:11434:11434 ollama/ollama:0.12.1
+            for i in $(seq 1 25); do
+              if curl --fail --silent http://127.0.0.1:11434/api/version >/dev/null; then break; fi
+              sleep 1
+            done
+            docker exec civicpatch-ollama ollama pull qwen2.5-coder:0.5b
+          else
+            echo 'Using OpenAI-compatible endpoint with repository secret; no local model download.'
+          fi
+      - name: Generate exactly one reviewed-scope code-and-test change
+        if: steps.gate.outputs.run == 'true'
+        env:
+          CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
+          CIVICPATCH_LLM_API_URL: ${{ vars.CIVICPATCH_LLM_API_URL }}
+          CIVICPATCH_LLM_MODEL: ${{ vars.CIVICPATCH_LLM_MODEL }}
+        run: python3 scripts/autodev.py generate
+      - name: Enforce patch cleanliness and capture candidate
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          mkdir -p artifacts
+          git diff --binary -- scripts/check_source_urls.py tests/test_source_url_health.py scripts/validate_ma_directory.py tests/test_ma_directory.py scripts/report_ma_coverage.py tests/test_ma_coverage_report.py .github/autodev/progress.json > artifacts/autodev.patch
+          test -s artifacts/autodev.patch
+          echo 'Candidate patch captured without executing any model-provided shell commands.'
+      - name: Run offline regression tests and directory integrity checks
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 scripts/validate_ma_directory.py
+          python3 scripts/report_ma_coverage.py
+      - name: Keep the candidate diff as a short-lived review artifact
+        if: steps.gate.outputs.run == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: civicpatch-agentic-proposal-${{ github.run_id }}
+          path: artifacts/autodev.patch
+          if-no-files-found: ignore
+          retention-days: 2
+      - name: Open a draft PR only after regression gates pass
+        if: steps.gate.outputs.run == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: automation/autodev-next
+          delete-branch: true
+          draft: true
+          add-paths: |
+            scripts/check_source_urls.py
+            tests/test_source_url_health.py
+            scripts/validate_ma_directory.py
+            tests/test_ma_directory.py
+            scripts/report_ma_coverage.py
+            tests/test_ma_coverage_report.py
+            .github/autodev/progress.json
+          commit-message: "autodev: propose one bounded CivicPatch improvement"
+          title: "[Agentic review] Next CivicPatch code-and-test increment"
+          body: |
+            Automated **draft** generated from the curated task queue in `.github/autodev/tasks.json`.
+            Scope is limited to two reviewed Python files and one progress marker.
+            `unittest` and municipality validation passed inside the workflow before this PR was opened.
+            **Do not merge without checking the patch, provenance, security and accessibility impact.**
+            Merging the progress marker advances the next six-hour cycle to the next task.
+            No automatic production deployment or PR merge is authorized.
