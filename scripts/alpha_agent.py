@@ -13,6 +13,7 @@ import re
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -29,7 +30,7 @@ SHA_RE = re.compile(r"^[a-f0-9]{40}$")
 FEATURE_START = "/* ALPHA GENERATED START */"
 FEATURE_END = "/* ALPHA GENERATED END */"
 MAX_FEATURES = 18
-MAX_ATTEMPTS = 30
+MAX_MONTHLY_ATTEMPTS = 62
 UNSAFE = re.compile(
     r"\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|Worker|"
     r"sendBeacon|localStorage|sessionStorage|indexedDB|"
@@ -68,10 +69,21 @@ def feature_path(task: dict, root: Path = ROOT) -> Path:
     return root / "alpha-agent" / "features" / f"{name}.js"
 
 
+
+def record_attempt(state: dict) -> None:
+    """Persist a calendar-month attempt counter instead of permanent shutdown."""
+    month = datetime.now(timezone.utc).strftime("%Y-%m")
+    if state.get("period") != month:
+        state["period"] = month
+        state["period_attempts"] = 0
+    state["attempts"] += 1
+    state["period_attempts"] = state.get("period_attempts", 0) + 1
+
 def select_goal(root: Path = ROOT) -> dict | None:
     state = read_json(root / "alpha-agent/state.json")
     goals = read_json(root / "alpha-agent/roadmap.json")["goals"]
-    if state["attempts"] >= MAX_ATTEMPTS:
+    month = datetime.now(timezone.utc).strftime("%Y-%m")
+    if state.get("period") == month and state.get("period_attempts", 0) >= MAX_MONTHLY_ATTEMPTS:
         return None
     completed = set(state["completed"])
     # Every three successful increments, prioritize evidence-backed inspection
@@ -108,7 +120,19 @@ def select_goal(root: Path = ROOT) -> dict | None:
         oldest = min(deferred, key=lambda goal: blocked[goal["id"]]["attempt"])
         return {**oldest, "target": oldest["id"], "kind": "recovery"}
     if len(completed) >= MAX_FEATURES:
-        return None
+        previous = [item for item in goals if item["id"] in completed]
+        if not previous:
+            return None
+        target = previous[state["review_count"] % len(previous)]
+        return {
+            "id": f"maintenance-{state['attempts'] + 1}-{target['id']}",
+            "target": target["id"], "title": target["title"],
+            "kind": "review",
+            "goal": ("Perform periodic model-guided regression review: improve an "
+                     "existing accessible feature, correct a concrete defect, "
+                     "and preserve verified browser behavior. " + target["goal"]),
+            "connections": target["connections"],
+        }
     return {
         "id": f"discovery-{count + 1}", "target": f"discovery-{count + 1}",
         "title": "Incremental accessible civic UI improvement",
@@ -271,7 +295,7 @@ def synthesize(root: Path = ROOT, diagnostic: str = "") -> Path:
             target.write_text(wrap_feature(task, body), encoding="utf-8")
             if not diagnostic:
                 state = read_json(root / "alpha-agent/state.json")
-                state["attempts"] += 1
+                record_attempt(state)
                 state["pending"] = {
                     "id": task["id"], "target": task["target"],
                     "kind": task["kind"], "title": task["title"],
@@ -391,7 +415,7 @@ def generation_failure(root: Path, reason: str) -> None:
     if task is None:
         raise ValueError("No eligible failed goal")
     state = read_json(root / "alpha-agent/state.json")
-    state["attempts"] += 1
+    record_attempt(state)
     state["blocked"] = [row for row in state["blocked"]
                         if row["id"] != task["id"]]
     state["blocked"].append({
