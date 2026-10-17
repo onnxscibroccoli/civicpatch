@@ -1,20 +1,20 @@
 {
   "task": {
-    "id": "progress-steps",
-    "title": "Interactive local progress checklist",
-    "goal": "Create a keyboard-accessible checklist for generic source-review steps. Keep selections only in current page memory, never store private information or imply official source validation.",
+    "id": "quality-modal-connections-map",
+    "target": "connections-map",
+    "title": "Accessible dependency map",
+    "kind": "review",
+    "goal": "Remove the generic popup-based demo interaction. Replace it with an accessible native control that reveals concrete civic source-verification cautions in the document, not an alert dialog. Create an accessible interactive outline explaining the internal connections needed to turn a local civic concern into responsible next steps, clearly labeling uncertain or unverified links. No external network requests.",
     "connections": [
       "DOM",
-      "event listeners",
-      "ARIA status"
-    ],
-    "target": "progress-steps",
-    "kind": "new"
+      "ARIA",
+      "keyboard navigation"
+    ]
   },
   "connections": [
     "DOM",
-    "event listeners",
-    "ARIA status"
+    "ARIA",
+    "keyboard navigation"
   ],
   "steps": [
     "Build one accessible, self-contained UI component"

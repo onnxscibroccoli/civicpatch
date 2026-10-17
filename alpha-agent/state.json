@@ -5,11 +5,17 @@
     "progress-steps"
   ],
   "blocked": [],
-  "attempts": 4,
+  "attempts": 5,
   "successful_iterations": 3,
   "review_count": 1,
   "last_good_sha": "45ee14f1dcf611d3c2c41da5310892381dfceff2",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 4
+  "period_attempts": 5,
+  "pending": {
+    "id": "quality-modal-connections-map",
+    "target": "connections-map",
+    "kind": "review",
+    "title": "Accessible dependency map"
+  }
 }
