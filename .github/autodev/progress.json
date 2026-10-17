@@ -1,5 +1,6 @@
 {
   "completed": [
-    "p0-redirect-boundaries"
+    "p0-redirect-boundaries",
+    "p0-url-network-failures"
   ]
 }

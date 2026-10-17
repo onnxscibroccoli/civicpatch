@@ -89,9 +89,11 @@ def probe(url):
         except HTTPError as exc:
             if method == "HEAD" and exc.code in (405, 501):
                 continue
-            return {"url": url, "status": "broken", "http_status": exc.code, "final_url": exc.geturl(), "error": str(exc)[:300]}
+            classification = ("broken" if exc.code in (404, 410) else
+                              "transient_error" if exc.code in (429, 500, 502, 503, 504) else "manual_review")
+            return {"url": url, "status": classification, "http_status": exc.code, "final_url": exc.geturl(), "error": str(exc)[:300]}
         except (URLError, TimeoutError, OSError) as exc:
-            return {"url": url, "status": "broken", "http_status": None, "final_url": None, "error": str(exc)[:300]}
+            return {"url": url, "status": "transient_error", "http_status": None, "final_url": None, "error": str(exc)[:300]}
     return {"url": url, "status": "manual_review", "http_status": None, "final_url": None, "error": "No supported HTTP response"}
 
 
@@ -110,7 +112,7 @@ def main():
     data = json.loads(DATA.read_text(encoding="utf-8"))
     urls = collect_urls(data)
     results = [probe(url) for url in urls]
-    counts = {key: sum(row["status"] == key for row in results) for key in ("reachable", "redirected", "broken", "manual_review")}
+    counts = {key: sum(row["status"] == key for row in results) for key in ("reachable", "redirected", "broken", "transient_error", "manual_review")}
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source": "data/ma/municipalities.json",
