@@ -1,18 +1,14 @@
 {
   "schema_version": 1,
-  "completed": [],
+  "completed": [
+    "connections-map"
+  ],
   "blocked": [],
   "attempts": 1,
-  "successful_iterations": 0,
+  "successful_iterations": 1,
   "review_count": 0,
-  "last_good_sha": null,
+  "last_good_sha": "2c457f6aa57d84bd29197a7429aa9bdb35a383e1",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 1,
-  "pending": {
-    "id": "connections-map",
-    "target": "connections-map",
-    "kind": "new",
-    "title": "Accessible dependency map"
-  }
+  "period_attempts": 1
 }
