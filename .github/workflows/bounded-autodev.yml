@@ -38,8 +38,17 @@ jobs:
             echo 'run=false' >> "$GITHUB_OUTPUT"
             echo 'Curated milestone tasks complete.'
           fi
-      - name: Start a small local open model only when no API key is configured
+      - name: Select approved execution strategy before provisioning a model
         if: steps.gate.outputs.run == 'true'
+        id: strategy
+        shell: bash
+        run: |
+          set -euo pipefail
+          strategy="$(python3 scripts/autodev.py strategy)"
+          case "$strategy" in recipe|model) echo "type=$strategy" >> "$GITHUB_OUTPUT";; *) exit 1;; esac
+          echo "Candidate execution strategy: $strategy"
+      - name: Start a small local open model only when no API key is configured
+        if: steps.gate.outputs.run == 'true' && steps.strategy.outputs.type == 'model'
         env:
           CIVICPATCH_LLM_API_KEY: ${{ secrets.CIVICPATCH_LLM_API_KEY }}
         shell: bash
