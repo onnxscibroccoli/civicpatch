@@ -58,7 +58,7 @@ The beta verification gate runs the full Python unittest suite, syntax compilati
 
 Required repository settings: **Settings → Actions → General → Workflow permissions → Read and write permissions**; enable **Allow GitHub Actions to create and approve pull requests**. Previously reported Issues #3/#4 indicate write restrictions may still be present. If administration/organization rules prevent these settings, GitHub will not let the unattended workflow publish new PRs or commits; do not attempt to circumvent that constraint.
 
-An optional `CIVICPATCH_LLM_API_KEY` secret selects a configurable OpenAI-compatible HTTPS provider. Without it, the runner pulls local `qwen2.5-coder:1.5b` through Ollama. Each codegen run is capped at 15 minutes and model-proposed edits are strictly parsed, path-checked and run **only in a secret-free test job**.
+An optional `CIVICPATCH_LLM_API_KEY` secret selects a configurable OpenAI-compatible HTTPS provider. Without it, the runner pulls local `qwen2.5-coder:1.5b` through Ollama for tasks without an audited recipe. Each codegen run is capped at 15 minutes and model-proposed edits are strictly parsed, path-checked and exercised in **steps without model API secrets**, followed by a separately permissioned, independent gatekeeper test job. The Pages build/tests use `contents: read` in a separate job from deployment credentials.
 
 ## Cost and failures
 
@@ -76,6 +76,5 @@ python3 scripts/report_ma_coverage.py
 python3 scripts/build_pages_bundle.py --output /tmp/civicpatch-site
 ```
 
-The [dispatcher](../.github/workflows/agent-dispatcher.yml) and [deployment gatekeeper](../.github/workflows/agent-gatekeeper.yml) should be checked after the first live activation. A successful YAML/CI test does **not** prove GitHub's runtime permissions or that `gh workflow run`, `gh pr ready`, `gh pr merge` and Pages promotion work on this repository. Confirm each from actual Actions run logs before declaring end-to-end handover complete.
-
+The [dispatcher](../.github/workflows/agent-dispatcher.yml) and [deployment gatekeeper](../.github/workflows/agent-gatekeeper.yml) have now completed a live chained cycle: dispatcher [39009951716](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39009951716), issue ingestion [39009956991](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39009956991), generator [39009966302](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39009966302), gatekeeper [39009983238](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39009983238), and Pages [39010015925](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39010015925). These runs demonstrate operational token scopes and automated code-and-test promotion within the declared allowlist. See [handover details](AGENT-HANDOVER.md).
 The two upstream `CivicPatch/open-data` and `CivicPatch/civicpatch-tools` repositories belong to a separate organization. This workflow has no write rights there, and it does not impose their schemas on this repository.

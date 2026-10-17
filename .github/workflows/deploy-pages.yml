@@ -7,21 +7,18 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     if: github.repository == 'onnxscibroccoli/civicpatch'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 10
+    permissions:
+      contents: read
     steps:
       - name: Check out immutable production main
         uses: actions/checkout@v4
@@ -31,7 +28,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate production assets and tests before any upload
+      - name: Validate production assets and tests without deployment credentials
         shell: bash
         run: |
           set -euo pipefail
@@ -41,6 +38,7 @@ jobs:
           test -s CONTRIBUTING.md
           test -s data/ma/municipalities.json
           grep -q 'not a fully verified Massachusetts-wide service' index.html
+          python3 -m compileall -q scripts tests
           python3 -m unittest discover -s tests -v
           python3 scripts/validate_ma_directory.py
       - name: Resolve alpha and beta stage commits if published
@@ -75,11 +73,24 @@ jobs:
           if [ -n "$BETA" ]; then test -s "$RUNNER_TEMP/civicpatch-site/beta/index.html"; fi
           test ! -e "$RUNNER_TEMP/civicpatch-site/.github"
           test ! -e "$RUNNER_TEMP/civicpatch-site/scripts"
-      - uses: actions/configure-pages@v5
-      - name: Upload sanitized Pages artifact
+      - name: Upload tested, sanitized Pages artifact without a deploy token
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/civicpatch-site
+
+  deploy:
+    needs: build
+    if: github.repository == 'onnxscibroccoli/civicpatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
       - name: Publish production and available previews atomically
         id: deployment
         uses: actions/deploy-pages@v4
