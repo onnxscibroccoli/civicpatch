@@ -125,6 +125,6 @@ jobs:
           gh pr ready "$NUMBER" --repo "$GITHUB_REPOSITORY"
           actual="$(gh pr view "$NUMBER" --repo "$GITHUB_REPOSITORY" --json headRefOid --jq .headRefOid)"
           test "$actual" = "$SHA"
-          gh pr merge "$NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch=false
+          gh pr merge "$NUMBER" --repo "$GITHUB_REPOSITORY" --squash
       - name: Explicitly trigger Pages because bot merges do not necessarily create push-triggered workflow runs
         run: gh workflow run deploy-pages.yml --repo "$GITHUB_REPOSITORY" --ref main
