@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "goals": [
+    {
+      "id": "connections-map",
+      "title": "Accessible dependency map",
+      "goal": "Create an accessible interactive outline explaining the internal connections needed to turn a local civic concern into responsible next steps, clearly labeling uncertain or unverified links. No external network requests.",
+      "connections": [
+        "DOM",
+        "ARIA",
+        "keyboard navigation"
+      ]
+    },
+    {
+      "id": "progress-steps",
+      "title": "Interactive local progress checklist",
+      "goal": "Create a keyboard-accessible checklist for generic source-review steps. Keep selections only in current page memory, never store private information or imply official source validation.",
+      "connections": [
+        "DOM",
+        "event listeners",
+        "ARIA status"
+      ]
+    },
+    {
+      "id": "evidence-ladder",
+      "title": "Explain evidence quality",
+      "goal": "Create a compact expandable explanation of candidate versus reviewed versus verified evidence, with accessible buttons and explicit warnings that URL reachability is not factual verification.",
+      "connections": [
+        "DOM",
+        "accessible disclosure",
+        "clear status labels"
+      ]
+    },
+    {
+      "id": "issue-pathways",
+      "title": "Civic issue pathway explorer",
+      "goal": "Present an interactive illustrative pathway from issue description to finding a trustworthy source and then independently contacting the correct official site. No actual form submission or fabricated responsibility.",
+      "connections": [
+        "DOM",
+        "event listeners",
+        "transparent uncertainty"
+      ]
+    }
+  ]
+}
