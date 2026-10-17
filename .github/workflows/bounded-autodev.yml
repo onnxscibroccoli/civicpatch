@@ -57,7 +57,7 @@ jobs:
               if curl --fail --silent http://127.0.0.1:11434/api/version >/dev/null; then break; fi
               sleep 1
             done
-            docker exec civicpatch-ollama ollama pull qwen2.5-coder:0.5b
+            docker exec civicpatch-ollama ollama pull qwen2.5-coder:1.5b
           else
             echo 'Using OpenAI-compatible endpoint with repository secret; no local model download.'
           fi
