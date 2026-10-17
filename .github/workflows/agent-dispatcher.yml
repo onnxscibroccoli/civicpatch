@@ -1,6 +1,10 @@
 name: Agent dispatcher (bounded state machine)
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/agent-dispatcher.yml"
   schedule:
     - cron: "19 2,8,14,20 * * *"
   workflow_dispatch:
