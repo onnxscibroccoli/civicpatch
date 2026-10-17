@@ -11,7 +11,7 @@ CivicPatch uses [`.github/workflows/bounded-autodev.yml`](../.github/workflows/b
 
 ## Open model and API routing
 
-**No paid API key is necessary.** Without a secret, the workflow runs Ollama in a short-lived Docker container and pulls the open `qwen2.5-coder:0.5b` model. CPU inference uses the documented Ollama JSON-mode chat API. Very small models may fail to produce useful patches; failure is safe, and the same task is attempted next time.
+**No paid API key is necessary.** Without a secret, the workflow runs Ollama in a short-lived Docker container and pulls the open `qwen2.5-coder:1.5b` model. CPU inference uses the documented Ollama JSON-mode chat API. Very small models may fail to produce useful patches; failure is safe, and the same task is attempted next time.
 
 An optional larger LLM can be used through an OpenAI-compatible HTTPS endpoint. Configure the repository Actions secret `CIVICPATCH_LLM_API_KEY`. Optionally set repository Actions variables `CIVICPATCH_LLM_API_URL` and `CIVICPATCH_LLM_MODEL`. With a key, defaults are `https://openrouter.ai/api/v1/chat/completions` and `openrouter/free`. Both variables must match the chosen provider; free model availability and quotas can change. For guaranteed zero API spending, use the local fallback or restrict provider credentials to a zero-spend/free-only account. **GitHub Actions timeouts do not constrain external API spending.**
 
