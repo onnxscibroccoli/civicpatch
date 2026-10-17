@@ -55,11 +55,27 @@ jobs:
               echo "No agent/$stage branch; leaving /$stage unpublished."
             fi
           done
+      - name: Resolve independently versioned Alpha and Beta frontend lab commits
+        id: frontend
+        shell: bash
+        run: |
+          set -euo pipefail
+          for stage in alpha beta; do
+            if git fetch --quiet --no-tags --depth=1 origin "refs/heads/agent/$stage-frontend:refs/remotes/origin/agent/$stage-frontend"; then
+              sha="$(git rev-parse "refs/remotes/origin/agent/$stage-frontend^{commit}")"
+              [[ "$sha" =~ ^[a-f0-9]{40}$ ]] || exit 1
+              echo "${stage}_frontend=$sha" >> "$GITHUB_OUTPUT"
+            else
+              echo "No $stage frontend branch; leaving the experiment unpublished."
+            fi
+          done
       - name: Assemble production plus labeled non-indexed preview directories
         env:
           ALPHA: ${{ steps.preview.outputs.alpha }}
           BETA: ${{ steps.preview.outputs.beta }}
-        run: python3 scripts/build_pages_bundle.py --output "$RUNNER_TEMP/civicpatch-site" --alpha "$ALPHA" --beta "$BETA"
+          ALPHA_FRONTEND: ${{ steps.frontend.outputs.alpha_frontend }}
+          BETA_FRONTEND: ${{ steps.frontend.outputs.beta_frontend }}
+        run: python3 scripts/build_pages_bundle.py --output "$RUNNER_TEMP/civicpatch-site" --alpha "$ALPHA" --beta "$BETA" --alpha-frontend "$ALPHA_FRONTEND" --beta-frontend "$BETA_FRONTEND"
       - name: Verify bundled output and preview route requirements
         env:
           ALPHA: ${{ steps.preview.outputs.alpha }}
@@ -71,6 +87,14 @@ jobs:
           test -s "$RUNNER_TEMP/civicpatch-site/data/ma/municipalities.json"
           if [ -n "$ALPHA" ]; then test -s "$RUNNER_TEMP/civicpatch-site/alpha/index.html"; fi
           if [ -n "$BETA" ]; then test -s "$RUNNER_TEMP/civicpatch-site/beta/index.html"; fi
+          if [ -n "${{ steps.frontend.outputs.alpha_frontend }}" ]; then
+            test -s "$RUNNER_TEMP/civicpatch-site/alpha/agentic/index.html"
+            test -s "$RUNNER_TEMP/civicpatch-site/alpha/agentic/base.js"
+            test -s "$RUNNER_TEMP/civicpatch-site/alpha/agentic/style.css"
+          fi
+          if [ -n "${{ steps.frontend.outputs.beta_frontend }}" ]; then
+            test -s "$RUNNER_TEMP/civicpatch-site/beta/agentic/index.html"
+          fi
           test ! -e "$RUNNER_TEMP/civicpatch-site/.github"
           test ! -e "$RUNNER_TEMP/civicpatch-site/scripts"
       - name: Upload tested, sanitized Pages artifact without a deploy token
