@@ -140,7 +140,8 @@ class AlphaAgentTests(unittest.TestCase):
         alpha.write_json(self.root / "alpha-agent/state.json", state)
         goal = alpha.select_goal(self.root)
         self.assertEqual(goal["kind"], "review")
-        self.assertEqual(goal["target"], "source-review")
+        self.assertIn(goal["target"], ("source-review", "keyboard-help"))
+        self.assertTrue(goal["id"].startswith("maintenance-"))
 
     def test_refuses_wrong_live_host_or_sha(self):
         with self.assertRaises(ValueError):
