@@ -376,10 +376,67 @@ def check_live(root: Path, sha: str, base: str, retries: int = 10) -> None:
     raise ValueError("Live Alpha smoke failed after bounded retries: " + last)
 
 
+
+def generation_failure(root: Path, reason: str) -> None:
+    """Record a failed model proposal and move to a different goal next time."""
+    task = select_goal(root)
+    if task is None:
+        raise ValueError("No eligible failed goal")
+    state = read_json(root / "alpha-agent/state.json")
+    state["attempts"] += 1
+    state["blocked"] = [row for row in state["blocked"]
+                        if row["id"] != task["id"]]
+    state["blocked"].append({
+        "id": task["id"], "target": task["target"],
+        "attempt": state["attempts"], "reason": reason[-350:],
+    })
+    state["blocked"] = state["blocked"][-10:]
+    state["last_failure"] = {"task": task["id"], "reason": reason[-350:]}
+    write_json(root / "alpha-agent/state.json", state)
+    print(json.dumps({"generation_deferred": task["id"]}))
+
+
+def dispatch_pages_and_smoke(root: Path, sha: str) -> None:
+    """Wait for the exact Pages deployment created by this workflow_dispatch."""
+    if not SHA_RE.fullmatch(sha):
+        raise ValueError("Invalid published candidate SHA")
+    repo = os.getenv("GITHUB_REPOSITORY", "")
+    if repo != "onnxscibroccoli/civicpatch" or not os.getenv("GH_TOKEN"):
+        raise ValueError("Explicit GitHub repository/token required for deployment")
+    response = subprocess.run(
+        ["gh", "api", "-X", "POST",
+         f"repos/{repo}/actions/workflows/deploy-pages.yml/dispatches",
+         "-f", "ref=main", "-F", "return_run_details=true"],
+        cwd=root, capture_output=True, text=True, check=True, timeout=20,
+    )
+    payload = json.loads(response.stdout)
+    run_id = payload.get("workflow_run_id")
+    if not isinstance(run_id, int) or run_id < 1:
+        raise ValueError("Dispatch API did not identify its exact Pages run")
+    print(json.dumps({"pages_run_id": run_id, "url": payload.get("html_url")}),
+          flush=True)
+    status = None
+    for _ in range(42):
+        result = subprocess.run(
+            ["gh", "api", f"repos/{repo}/actions/runs/{run_id}"],
+            cwd=root, capture_output=True, text=True, check=True, timeout=20,
+        )
+        report = json.loads(result.stdout)
+        status = report.get("status")
+        if status == "completed":
+            if report.get("conclusion") != "success":
+                raise ValueError(f"Pages deployment {run_id} failed: {report.get('conclusion')}")
+            break
+        time.sleep(6)
+    else:
+        raise ValueError(f"Pages deployment {run_id} did not finish within budget")
+    check_live(root, sha, "https://onnxscibroccoli.github.io/civicpatch/")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=(
-        "pending", "plan", "generate", "repair", "smoke", "accept", "reject",
+        "pending", "plan", "generate", "repair", "smoke", "publish-smoke", "accept", "reject", "generation-failure",
     ))
     parser.add_argument("--sha", default="")
     parser.add_argument("--diagnostic", default="")
@@ -405,6 +462,10 @@ def main() -> int:
         synthesize(diagnostic=file.read_text(encoding="utf-8", errors="replace"))
     elif options.command == "smoke":
         check_live(ROOT, options.sha, options.base, retries=options.retries)
+    elif options.command == "publish-smoke":
+        dispatch_pages_and_smoke(ROOT, options.sha)
+    elif options.command == "generation-failure":
+        generation_failure(ROOT, options.diagnostic)
     elif options.command == "accept":
         accept(ROOT, options.sha)
     elif options.command == "reject":
