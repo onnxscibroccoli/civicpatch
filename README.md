@@ -102,6 +102,10 @@ CivicPatch is released under the MIT License. Contributions are welcome under th
 
 Do not trade trust for a demo that looks complete. Ship useful increments, verify claims, preserve source attribution, and clearly mark what is not yet supported. If another team can implement this idea better, the public concept and open documentation should make that possible.
 
+## GitHub Actions multi-agent execution
+
+The [GitHub Actions state machine](docs/AGENT-STATE-MACHINE.md) coordinates scheduled task ingestion, bounded model code synthesis, secret-free regression repair, independent CI gatekeeping, and distinct Pages preview paths (`/alpha/`, `/beta/`, and production `/`). Only strictly allowlisted Python source/test/progress changes are eligible for unattended merge. Official civic verification, public submissions, workflow self-modification, and uncontrolled recursion remain prohibited. GitHub token permissions and the first complete dispatch/promotion cycle still require live verification.
+
 ## Review-gated autonomous development
 
 CivicPatch includes a [bounded GitHub Actions development agent](.github/workflows/bounded-autodev.yml) that can propose narrowly scoped Python implementation-and-test improvements every six hours using an open local model (Ollama) or an optional OpenAI-compatible model API. It creates **draft PRs only after tests pass**; it does not merge, alter verified civic-source claims, or deploy new features without human review. Runs are limited to 15 minutes with one concurrent job and a five-task initial backlog. See [autonomous development setup, budget, permissions and safety constraints](docs/AUTONOMOUS-DEVELOPMENT.md).
