@@ -12,7 +12,7 @@ spec.loader.exec_module(module)
 
 
 class URLHealthTests(unittest.TestCase):
-    def test_only_unique_website_and_canonical_source_urls_are_checked(self):
+    def test_only_unique_website_and_canonical_source_urls_are_checked(self, max_probes=None):
         data = {"municipalities": [
             {"official_website": "https://town.example.gov", "official_sources": [{"canonical_url": "https://town.example.gov"}]},
             {"official_website": None, "official_sources": [{"canonical_url": "https://agency.example.gov"}]}

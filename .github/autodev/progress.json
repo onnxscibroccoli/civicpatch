@@ -1,6 +1,7 @@
 {
   "completed": [
     "p0-redirect-boundaries",
-    "p0-url-network-failures"
+    "p0-url-network-failures",
+    "p0-probe-budget"
   ]
 }
