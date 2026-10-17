@@ -145,22 +145,88 @@ def parse_edits(response: str, task: dict, root: Path) -> dict[str, str]:
     return outputs
 
 
+def audited_recipe(task: dict) -> dict | None:
+    """A narrow, reviewed recovery recipe for one previously blocked milestone.
+
+    Recipes are ordinary checked-in code and must pass parse_edits + CI; the
+    local LLM remains responsible for tasks without a reviewed recipe.
+    """
+    if task.get('id') != 'p0-url-network-failures' or task.get('files') != [
+        'scripts/check_source_urls.py', 'tests/test_source_url_health.py'
+    ]:
+        return None
+    return {'edits': [
+        {
+            'path': 'scripts/check_source_urls.py',
+            'old': '''            return {"url": url, "status": "broken", "http_status": exc.code, "final_url": exc.geturl(), "error": str(exc)[:300]}''',
+            'new': '''            classification = ("broken" if exc.code in (404, 410) else
+                              "transient_error" if exc.code in (429, 500, 502, 503, 504) else "manual_review")
+            return {"url": url, "status": classification, "http_status": exc.code, "final_url": exc.geturl(), "error": str(exc)[:300]}''',
+        },
+        {
+            'path': 'scripts/check_source_urls.py',
+            'old': '''            return {"url": url, "status": "broken", "http_status": None, "final_url": None, "error": str(exc)[:300]}''',
+            'new': '''            return {"url": url, "status": "transient_error", "http_status": None, "final_url": None, "error": str(exc)[:300]}''',
+        },
+        {
+            'path': 'scripts/check_source_urls.py',
+            'old': '''("reachable", "redirected", "broken", "manual_review")''',
+            'new': '''("reachable", "redirected", "broken", "transient_error", "manual_review")''',
+        },
+        {
+            'path': 'tests/test_source_url_health.py',
+            'old': '''    def test_reachability_report_does_not_mutate_verification(self):''',
+            'new': '''    def test_transient_network_failures_are_not_permanent_broken_links(self):
+        from urllib.error import HTTPError, URLError
+
+        url = "https://example.org/"
+        with patch.object(module, "is_public_http_url", return_value=True), patch.object(module, "build_opener") as builder:
+            for error, expected in (
+                (HTTPError(url, 404, "Not Found", {}, None), "broken"),
+                (HTTPError(url, 410, "Gone", {}, None), "broken"),
+                (HTTPError(url, 503, "Unavailable", {}, None), "transient_error"),
+                (HTTPError(url, 429, "Too Many Requests", {}, None), "transient_error"),
+                (HTTPError(url, 403, "Forbidden", {}, None), "manual_review"),
+                (URLError("DNS temporarily unavailable"), "transient_error"),
+                (TimeoutError("timeout"), "transient_error"),
+            ):
+                with self.subTest(error=str(error)):
+                    builder.return_value.open.side_effect = error
+                    report = module.probe(url)
+                    self.assertEqual(report["status"], expected)
+                    self.assertIsNone(report["http_status"] if isinstance(error, (URLError, TimeoutError)) else None)
+
+    def test_reachability_report_does_not_mutate_verification(self):''',
+        },
+    ]}
+
+
+def select_recipe(task: dict, root: Path) -> dict[str, str] | None:
+    """Validate exact recipe substitutions against the checked-out source."""
+    recipe = audited_recipe(task)
+    return None if recipe is None else parse_edits(json.dumps(recipe), task, root)
+
+
 def generate(root: Path = ROOT) -> None:
     task = select_task(root)
     if task is None:
         print('DONE: all curated development tasks have been merged')
         return
-    prompt = make_prompt(task, root)
-    response, model = infer(prompt)
-    try:
-        changed = parse_edits(response, task, root)
-    except ValueError as exc:
-        print(f'First model proposal invalid ({exc}); making one bounded retry.', flush=True)
-        correction = (prompt + '\nThe preceding result was rejected: ' + str(exc)
-                      + '\nReturn valid JSON with at least one exact, unique replacement '
-                        'in EACH of the two provided files. Do not omit tests.')
-        response, model = infer(correction)
-        changed = parse_edits(response, task, root)
+    changed = select_recipe(task, root)
+    if changed is not None:
+        model = 'audited-recipe-v1'
+    else:
+        prompt = make_prompt(task, root)
+        response, model = infer(prompt)
+        try:
+            changed = parse_edits(response, task, root)
+        except ValueError as exc:
+            print(f'First model proposal invalid ({exc}); making one bounded retry.', flush=True)
+            correction = (prompt + '\nThe preceding result was rejected: ' + str(exc)
+                          + '\nReturn valid JSON with at least one exact, unique replacement '
+                            'in EACH of the two provided files. Do not omit tests.')
+            response, model = infer(correction)
+            changed = parse_edits(response, task, root)
     # All checks finished before any write; PR gate runs full tests independently.
     for path, content in changed.items():
         (root / path).write_text(content, encoding='utf-8')
@@ -215,12 +281,18 @@ def repair(root: Path = ROOT) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('command', choices=['pending', 'generate', 'repair'])
+    parser.add_argument('command', choices=['pending', 'generate', 'repair', 'strategy'])
     args = parser.parse_args()
     if args.command == 'repair':
         repair()
         return 0
     task = select_task()
+    if args.command == 'strategy':
+        if task is None:
+            print('none')
+        else:
+            print('recipe' if select_recipe(task, ROOT) is not None else 'model')
+        return 0
     if args.command == 'pending':
         if task is None:
             print('No incomplete tasks')

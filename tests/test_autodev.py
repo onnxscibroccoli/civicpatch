@@ -95,6 +95,52 @@ class AutoDevTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             autodev.repair(self.root)
 
+    def test_audited_recipe_implements_transient_network_classification(self):
+        from unittest.mock import patch
+        task = {
+            'id': 'p0-url-network-failures',
+            'goal': 'Distinguish temporary errors from permanent failures',
+            'files': ['scripts/check_source_urls.py', 'tests/test_source_url_health.py'],
+        }
+        source = self.root / task['files'][0]
+        suite = self.root / task['files'][1]
+        source.write_text(
+            '            return {"url": url, "status": "broken", "http_status": exc.code, "final_url": exc.geturl(), "error": str(exc)[:300]}\\n'
+            '            return {"url": url, "status": "broken", "http_status": None, "final_url": None, "error": str(exc)[:300]}\\n'
+            '("reachable", "redirected", "broken", "manual_review")\\n',
+            encoding='utf-8',
+        )
+        suite.write_text(
+            '    def test_reachability_report_does_not_mutate_verification(self):\\n'
+            '        pass\\n',
+            encoding='utf-8',
+        )
+        (self.root / '.github/autodev/tasks.json').write_text(json.dumps({'tasks': [task]}))
+        original = source.read_text()
+        with patch.object(autodev, 'infer', side_effect=AssertionError('No LLM should be used')):
+            autodev.generate(self.root)
+        self.assertNotEqual(source.read_text(), original)
+        self.assertIn('transient_error', source.read_text())
+        self.assertIn('def test_transient_network_failures', suite.read_text())
+        self.assertEqual(
+            json.loads((self.root / '.github/autodev/progress.json').read_text())['completed'],
+            ['p0-url-network-failures'],
+        )
+
+    def test_recipe_rejects_unexpected_original_source_and_unapproved_ids(self):
+        self.assertIsNone(autodev.audited_recipe(self.task))
+        task = {
+            'id': 'p0-url-network-failures',
+            'goal': 'URL health',
+            'files': ['scripts/sample.py', 'tests/test_sample.py'],
+        }
+        self.assertIsNone(autodev.audited_recipe(task))
+        task['files'] = ['scripts/check_source_urls.py', 'tests/test_source_url_health.py']
+        (self.root / 'scripts/check_source_urls.py').write_text('no matching source\\n')
+        (self.root / 'tests/test_source_url_health.py').write_text('no matching test\\n')
+        with self.assertRaises(ValueError):
+            autodev.select_recipe(task, self.root)
+
     def test_only_python_source_and_test_tasks(self):
         with self.assertRaises(ValueError):
             autodev.validate_task({'files': ['.github/workflows/deploy-pages.yml', 'tests/test_sample.py']})

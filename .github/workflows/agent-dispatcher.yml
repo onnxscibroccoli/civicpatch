@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/agent-dispatcher.yml"
+      - "scripts/autodev.py"
+      - ".github/workflows/bounded-autodev.yml"
   schedule:
     - cron: "19 2,8,14,20 * * *"
   workflow_dispatch:
