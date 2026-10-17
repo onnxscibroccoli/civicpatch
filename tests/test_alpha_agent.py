@@ -117,6 +117,31 @@ class AlphaAgentTests(unittest.TestCase):
         self.assertEqual(result["task"]["id"], goal["id"])
         self.assertEqual(result["connections"], ["DOM", "ARIA"])
 
+    def test_monthly_budget_resets_without_erasing_lifetime_progress(self):
+        from datetime import datetime, timezone
+        month = datetime.now(timezone.utc).strftime("%Y-%m")
+        state = dict(self.state)
+        state.update(attempts=125, period=month, period_attempts=62)
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        self.assertIsNone(alpha.select_goal(self.root))
+        state["period"] = "2020-01"
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        self.assertIsNotNone(alpha.select_goal(self.root))
+        alpha.record_attempt(state)
+        self.assertEqual(state["period"], month)
+        self.assertEqual(state["period_attempts"], 1)
+        self.assertEqual(state["attempts"], 126)
+
+    def test_permanent_self_review_after_feature_limit(self):
+        state = dict(self.state)
+        state.update(completed=["source-review"] + [
+            "discovery-" + str(i) for i in range(17)
+        ], successful_iterations=40, review_count=13, attempts=40)
+        alpha.write_json(self.root / "alpha-agent/state.json", state)
+        goal = alpha.select_goal(self.root)
+        self.assertEqual(goal["kind"], "review")
+        self.assertEqual(goal["target"], "source-review")
+
     def test_refuses_wrong_live_host_or_sha(self):
         with self.assertRaises(ValueError):
             alpha.check_live(self.root, "not-a-sha", "https://onnxscibroccoli.github.io/civicpatch/")
