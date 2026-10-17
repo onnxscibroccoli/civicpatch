@@ -64,7 +64,7 @@ class PublicOnlyRedirectHandler(HTTPRedirectHandler):
             raise UnsafeRedirectError("redirect target is not an allowed public HTTP(S) URL")
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
-def probe(url):
+def probe(url, max_probes=None):
     if not is_public_http_url(url):
         return {"url": url, "status": "manual_review", "http_status": None, "final_url": None, "error": "URL is not an allowed public HTTP(S) destination"}
     headers = {"User-Agent": USER_AGENT, "Accept": "text/html,application/json,*/*"}
