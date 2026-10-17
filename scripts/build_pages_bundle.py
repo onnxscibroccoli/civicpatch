@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import shutil
 import subprocess
@@ -83,6 +84,42 @@ def feature_paths(sha: str) -> list[str]:
     return sorted(paths)
 
 
+def agent_progress_markup(state: dict, roadmap: dict, stage: str) -> str:
+    """Render safe, inspectable agent progress from immutable frontend JSON."""
+    if stage not in ("alpha", "beta"):
+        raise ValueError("Unknown lab stage")
+    goals = roadmap.get("goals")
+    finished = state.get("completed")
+    if not isinstance(goals, list) or not isinstance(finished, list) or len(goals) > 30:
+        raise ValueError("Invalid Alpha status source")
+    ids = {str(item) for item in finished if isinstance(item, str)}
+    cards = []
+    for goal in goals:
+        if not isinstance(goal, dict):
+            raise ValueError("Invalid Alpha roadmap item")
+        title = html.escape(str(goal.get("title", "Unnamed goal"))[:100])
+        name = str(goal.get("id", ""))
+        status = "Completed" if name in ids else "Planned"
+        cards.append(f"<li><strong>{title}</strong> — {status}</li>")
+    count = state.get("successful_iterations", 0)
+    if not isinstance(count, int) or count < 0:
+        raise ValueError("Invalid Alpha iteration count")
+    reviewed = state.get("review_count", 0)
+    if not isinstance(reviewed, int) or reviewed < 0:
+        raise ValueError("Invalid review count")
+    return (
+        '<section class="explain" aria-labelledby="agent-progress-heading">'
+        '<h2 id="agent-progress-heading">Autonomous build progress</h2>'
+        f'<p><strong>{count}</strong> checked increments; '
+        f'<strong>{reviewed}</strong> self-review cycles. '
+        'Each increment is generated, published to Alpha, then smoke-tested.</p>'
+        '<h3>Development goals</h3><ol>'
+        + "".join(cards)
+        + '</ol><p class="disclaimer">These counters describe engineering progress, '
+        'not verified civic information or accessibility certification.</p></section>'
+    )
+
+
 def build_agent_lab(output: Path, sha: str, stage: str) -> None:
     if not COMMIT_RE.fullmatch(sha) or stage not in ("alpha", "beta"):
         raise ValueError("Invalid Alpha lab source")
@@ -98,6 +135,14 @@ def build_agent_lab(output: Path, sha: str, stage: str) -> None:
     document = (lab / "index.html").read_text(encoding="utf-8")
     if "</head>" not in document or "</body>" not in document:
         raise ValueError("Invalid Alpha lab HTML structure")
+    progress_anchor = '<section aria-labelledby="features-heading" id="experiments">'
+    if progress_anchor not in document:
+        raise ValueError("Alpha shell lacks a safe progress insertion point")
+    state = json.loads((lab / "state.json").read_text(encoding="utf-8"))
+    roadmap = json.loads((lab / "roadmap.json").read_text(encoding="utf-8"))
+    document = document.replace(
+        progress_anchor, agent_progress_markup(state, roadmap, stage) + "\n" + progress_anchor, 1
+    )
     marker = f'<meta name="civicpatch-frontend-sha" content="{sha}">'
     document = document.replace("</head>", marker + "\n</head>", 1)
     tags = "\n".join(
