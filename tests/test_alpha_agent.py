@@ -196,6 +196,13 @@ class AlphaAgentTests(unittest.TestCase):
     def test_extract_model_code_accepts_constrained_key_variants(self):
         snippet = 'const p = document.createElement("p"); p.textContent = "Ready"; root.appendChild(p);'
         self.assertEqual(alpha.extract_model_code({"javascript": snippet}), snippet)
+        callback = (
+            'const b = document.createElement("button"); root.appendChild(b); '
+            'b.addEventListener("click", function () { b.textContent = "Opened"; });'
+        )
+        self.assertEqual(alpha.checked_body(callback), callback)
+        with self.assertRaises(ValueError):
+            alpha.checked_body('const broken = new Function("return 7");')
         with self.assertRaises(ValueError):
             alpha.extract_model_code({"not_code": snippet})
 
