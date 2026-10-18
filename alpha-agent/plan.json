@@ -1,20 +1,20 @@
 {
   "task": {
-    "id": "evidence-ladder",
-    "title": "Explain evidence quality",
-    "goal": "Create a compact expandable explanation of candidate versus reviewed versus verified evidence, with accessible buttons and explicit warnings that URL reachability is not factual verification.",
+    "id": "issue-pathways",
+    "title": "Civic issue pathway explorer",
+    "goal": "Present an interactive illustrative pathway from issue description to finding a trustworthy source and then independently contacting the correct official site. No actual form submission or fabricated responsibility.",
     "connections": [
       "DOM",
-      "accessible disclosure",
-      "clear status labels"
+      "event listeners",
+      "transparent uncertainty"
     ],
-    "target": "evidence-ladder",
+    "target": "issue-pathways",
     "kind": "new"
   },
   "connections": [
     "DOM",
-    "accessible disclosure",
-    "clear status labels"
+    "event listeners",
+    "transparent uncertainty"
   ],
   "steps": [
     "Build one accessible, self-contained UI component"
