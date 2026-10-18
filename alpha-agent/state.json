@@ -3,20 +3,15 @@
   "completed": [
     "connections-map",
     "progress-steps",
-    "evidence-ladder"
+    "evidence-ladder",
+    "issue-pathways"
   ],
   "blocked": [],
   "attempts": 7,
-  "successful_iterations": 5,
+  "successful_iterations": 6,
   "review_count": 2,
-  "last_good_sha": "9e73f33a62308bbf8a52abb2cd18ee27b5cedf04",
+  "last_good_sha": "994ceb988db54324fce55fd4d7eaea3a985905e5",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 7,
-  "pending": {
-    "id": "issue-pathways",
-    "target": "issue-pathways",
-    "kind": "new",
-    "title": "Civic issue pathway explorer"
-  }
+  "period_attempts": 7
 }
