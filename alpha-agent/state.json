@@ -5,20 +5,15 @@
     "progress-steps",
     "evidence-ladder",
     "issue-pathways",
-    "discovery-7"
+    "discovery-7",
+    "discovery-8"
   ],
   "blocked": [],
   "attempts": 9,
-  "successful_iterations": 7,
+  "successful_iterations": 8,
   "review_count": 2,
-  "last_good_sha": "49ff0225d4b2f22040c6bc18ff9d5e0e2fc1ba6f",
+  "last_good_sha": "23cda927523593b08fb560c7891e6fa62b356259",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 9,
-  "pending": {
-    "id": "discovery-8",
-    "target": "discovery-8",
-    "kind": "discovery",
-    "title": "Incremental accessible civic UI improvement"
-  }
+  "period_attempts": 9
 }
