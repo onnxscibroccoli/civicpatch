@@ -1,7 +1,7 @@
 {
   "task": {
-    "id": "discovery-8",
-    "target": "discovery-8",
+    "id": "discovery-9",
+    "target": "discovery-9",
     "title": "Incremental accessible civic UI improvement",
     "kind": "discovery",
     "goal": "Find one small, locally implementable, accessible interaction that improves the Alpha civic learning experience without external services, sensitive data or official verification claims.",
