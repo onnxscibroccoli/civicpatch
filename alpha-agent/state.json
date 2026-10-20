@@ -7,20 +7,15 @@
     "issue-pathways",
     "discovery-7",
     "discovery-8",
-    "discovery-9"
+    "discovery-9",
+    "discovery-11"
   ],
   "blocked": [],
   "attempts": 12,
-  "successful_iterations": 10,
+  "successful_iterations": 11,
   "review_count": 3,
-  "last_good_sha": "d8712ded23ffbd8ae1e1de11f91991c0a090721e",
+  "last_good_sha": "afd307fbcbdd254ec8500c9900f64b470e62848d",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 12,
-  "pending": {
-    "id": "discovery-11",
-    "target": "discovery-11",
-    "kind": "discovery",
-    "title": "Incremental accessible civic UI improvement"
-  }
+  "period_attempts": 12
 }
