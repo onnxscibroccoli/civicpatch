@@ -1,23 +1,25 @@
 {
   "task": {
-    "id": "discovery-9",
-    "target": "discovery-9",
-    "title": "Incremental accessible civic UI improvement",
-    "kind": "discovery",
-    "goal": "Find one small, locally implementable, accessible interaction that improves the Alpha civic learning experience without external services, sensitive data or official verification claims.",
+    "id": "review-3-evidence-ladder",
+    "target": "evidence-ladder",
+    "title": "Explain evidence quality",
+    "kind": "review",
+    "goal": "Audit and improve this existing feature for keyboard users, plain-language uncertainty and resilience. Fix obvious issues; preserve its core function. Create a compact expandable explanation of candidate versus reviewed versus verified evidence, with accessible buttons and explicit warnings that URL reachability is not factual verification.",
     "connections": [
       "DOM",
-      "ARIA",
-      "events"
+      "accessible disclosure",
+      "clear status labels"
     ]
   },
   "connections": [
     "DOM",
-    "ARIA",
-    "events"
+    "accessible disclosure",
+    "clear status labels"
   ],
   "steps": [
     "Build one accessible, self-contained UI component"
   ],
-  "risks": []
+  "risks": [
+    "Experimental; no official verification"
+  ]
 }
