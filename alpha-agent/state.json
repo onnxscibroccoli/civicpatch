@@ -12,11 +12,17 @@
     "discovery-12"
   ],
   "blocked": [],
-  "attempts": 13,
+  "attempts": 14,
   "successful_iterations": 12,
   "review_count": 3,
   "last_good_sha": "b5353a60da6ba3685c609cbe419b67da14fd2194",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 13
+  "period_attempts": 14,
+  "pending": {
+    "id": "review-4-issue-pathways",
+    "target": "issue-pathways",
+    "kind": "review",
+    "title": "Civic issue pathway explorer"
+  }
 }

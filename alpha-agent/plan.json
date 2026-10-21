@@ -1,20 +1,20 @@
 {
   "task": {
-    "id": "discovery-12",
-    "target": "discovery-12",
-    "title": "Incremental accessible civic UI improvement",
-    "kind": "discovery",
-    "goal": "Find one small, locally implementable, accessible interaction that improves the Alpha civic learning experience without external services, sensitive data or official verification claims.",
+    "id": "review-4-issue-pathways",
+    "target": "issue-pathways",
+    "title": "Civic issue pathway explorer",
+    "kind": "review",
+    "goal": "Audit and improve this existing feature for keyboard users, plain-language uncertainty and resilience. Fix obvious issues; preserve its core function. Present an interactive illustrative pathway from issue description to finding a trustworthy source and then independently contacting the correct official site. No actual form submission or fabricated responsibility.",
     "connections": [
       "DOM",
-      "ARIA",
-      "events"
+      "event listeners",
+      "transparent uncertainty"
     ]
   },
   "connections": [
     "DOM",
-    "ARIA",
-    "events"
+    "event listeners",
+    "transparent uncertainty"
   ],
   "steps": [
     "Build one accessible, self-contained UI component"
