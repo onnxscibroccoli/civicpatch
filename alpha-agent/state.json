@@ -10,20 +10,15 @@
     "discovery-9",
     "discovery-11",
     "discovery-12",
-    "discovery-14"
+    "discovery-14",
+    "discovery-15"
   ],
   "blocked": [],
   "attempts": 16,
-  "successful_iterations": 14,
+  "successful_iterations": 15,
   "review_count": 4,
-  "last_good_sha": "dafed90252f931c92922583152103106e22c6c00",
+  "last_good_sha": "2633e99fc7fa3aa65f947ff94d59843144a56a34",
   "last_failure": null,
   "period": "2026-10",
-  "period_attempts": 16,
-  "pending": {
-    "id": "discovery-15",
-    "target": "discovery-15",
-    "kind": "discovery",
-    "title": "Incremental accessible civic UI improvement"
-  }
+  "period_attempts": 16
 }
