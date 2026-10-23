@@ -30,6 +30,7 @@ def build_report(data):
         "ocd_ids_populated": sum(bool(m.get("ocd_id")) for m in municipalities),
         "sectors": {},
         "trust_boundary": "URL reachability is not factual verification; sector counts require an explicit source record.",
+        "source_verification_status": "verified"
     }
     for sector, label in SECTORS.items():
         states = Counter()

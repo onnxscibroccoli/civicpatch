@@ -10,7 +10,7 @@ REPORTER = ROOT / "scripts" / "report_ma_coverage.py"
 
 class CoverageReportTests(unittest.TestCase):
     def test_empty_directory_reports_zero_without_inventing_coverage(self):
-        result = subprocess.run([sys.executable, str(REPORTER)], cwd=ROOT, text=True, capture_output=True)
+        result = subprocess.run([sys.executable, str(REPORTER)], cwd=ROOT, text=True, capture_output=True, check=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         report = json.loads(result.stdout)
         self.assertEqual(report["municipality_target"], 351)
