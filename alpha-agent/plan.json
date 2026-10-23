@@ -1,23 +1,25 @@
 {
   "task": {
-    "id": "discovery-15",
-    "target": "discovery-15",
-    "title": "Incremental accessible civic UI improvement",
-    "kind": "discovery",
-    "goal": "Find one small, locally implementable, accessible interaction that improves the Alpha civic learning experience without external services, sensitive data or official verification claims.",
+    "id": "review-5-connections-map",
+    "target": "connections-map",
+    "title": "Accessible dependency map",
+    "kind": "review",
+    "goal": "Audit and improve this existing feature for keyboard users, plain-language uncertainty and resilience. Fix obvious issues; preserve its core function. Create an accessible interactive outline explaining the internal connections needed to turn a local civic concern into responsible next steps, clearly labeling uncertain or unverified links. No external network requests.",
     "connections": [
       "DOM",
       "ARIA",
-      "events"
+      "keyboard navigation"
     ]
   },
   "connections": [
     "DOM",
     "ARIA",
-    "events"
+    "keyboard navigation"
   ],
   "steps": [
     "Build one accessible, self-contained UI component"
   ],
-  "risks": []
+  "risks": [
+    "Experimental; no official verification"
+  ]
 }

@@ -17,6 +17,6 @@ verifyButton.addEventListener("click", function () {
 });
 root.appendChild(verifyButton);
 root.appendChild(verificationNote);
-
+const outlineContainer = document.createElement('div'); outlineContainer.classList.add('outline-container'); const titleElement = document.createElement('h2'); titleElement.textContent = 'Internal Connections to Responsible Next Steps'; outlineContainer.appendChild(titleElement); const paragraph1 = document.createElement('p'); paragraph1.textContent = 'To turn a local civic concern into responsible next steps, you need to understand the internal connections between different systems and processes. This involves identifying the key stakeholders involved in the issue, analyzing the current state of the system, and determining the necessary actions to address the problem. Once you have identified these connections, you can create a plan for implementing the changes required to make the system more effective and sustainable.'; const button = document.createElement('button'); button.textContent = 'Learn More'; button.addEventListener('click', () => { const paragraph2 = document.createElement('p'); paragraph2.textContent = 'To learn more about how to turn a local civic concern into responsible next steps, you can visit our website or contact us for further information.'; outlineContainer.appendChild(paragraph1); outlineContainer.appendChild(paragraph2); }); root.appendChild(outlineContainer);
   /* ALPHA GENERATED END */
 });
