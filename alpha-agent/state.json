@@ -17,20 +17,20 @@
     {
       "id": "review-5-connections-map",
       "target": "connections-map",
-      "attempt": 28,
-      "reason": "{\"task\": \"review-5-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel proposal rejected (Generated JS body must be between 24 and 5000 characters); retrying with a smaller prompt.\nAlpha agent stopped safely: ValueError: Generated JS contains a forbidden "
+      "attempt": 29,
+      "reason": "{\"task\": \"review-5-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel proposal rejected (Generated JS body must be between 24 and 5000 characters); retrying with a smaller prompt.\nAlpha agent stopped safely: ValueError: Generated JS body must be between "
     }
   ],
-  "attempts": 28,
+  "attempts": 29,
   "successful_iterations": 15,
   "review_count": 4,
   "last_good_sha": "2633e99fc7fa3aa65f947ff94d59843144a56a34",
   "last_failure": {
     "task": "review-5-connections-map",
-    "reason": "{\"task\": \"review-5-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel proposal rejected (Generated JS body must be between 24 and 5000 characters); retrying with a smaller prompt.\nAlpha agent stopped safely: ValueError: Generated JS contains a forbidden "
+    "reason": "{\"task\": \"review-5-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel proposal rejected (Generated JS body must be between 24 and 5000 characters); retrying with a smaller prompt.\nAlpha agent stopped safely: ValueError: Generated JS body must be between "
   },
   "period": "2026-10",
-  "period_attempts": 28,
+  "period_attempts": 29,
   "pending": {
     "id": "review-5-connections-map",
     "target": "connections-map",
