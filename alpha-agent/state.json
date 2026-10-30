@@ -17,11 +17,11 @@
     {
       "id": "review-5-connections-map",
       "target": "connections-map",
-      "attempt": 30,
+      "attempt": 31,
       "reason": "{\"task\": \"review-5-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel proposal rejected (Generated JS contains a forbidden browser capability); retrying with a smaller prompt.\nAlpha agent stopped safely: ValueError: Generated JS body must be between 24 a"
     }
   ],
-  "attempts": 30,
+  "attempts": 31,
   "successful_iterations": 15,
   "review_count": 4,
   "last_good_sha": "2633e99fc7fa3aa65f947ff94d59843144a56a34",
@@ -30,7 +30,7 @@
     "reason": "{\"task\": \"review-5-connections-map\", \"kind\": \"review\", \"connections\": [\"DOM\", \"ARIA\", \"keyboard navigation\"]}\nModel proposal rejected (Generated JS contains a forbidden browser capability); retrying with a smaller prompt.\nAlpha agent stopped safely: ValueError: Generated JS body must be between 24 a"
   },
   "period": "2026-10",
-  "period_attempts": 30,
+  "period_attempts": 31,
   "pending": {
     "id": "review-5-connections-map",
     "target": "connections-map",
