@@ -23,6 +23,7 @@
 | Check | Exact run |
 | --- | --- |
 | Scheduled data validation on main | [Run 43056924311](https://github.com/onnxscibroccoli/civicpatch/actions/runs/43056924311) |
+| Latest Pages deploy on main (`cd94213`) | [Run 39963318576](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39963318576) — **failure**; previous deploy [run 39963257172](https://github.com/onnxscibroccoli/civicpatch/actions/runs/39963257172) (`cafe8ae`) succeeded. The [live Pages site](https://onnxscibroccoli.github.io/civicpatch/) may therefore lag `main`. |
 
 These run links refer to the specific branch/commit shown on GitHub. They must not be silently attributed to a different current HEAD, production environment, device or approval state.
 
@@ -47,6 +48,8 @@ This is a **documented command**, not a claim that this portfolio PR executed it
 ## Maturity and verification boundary
 
 The 351-municipality registry is a structural target, not proof that statewide public services and jurisdiction guidance have all been validated or deployed.
+
+Current validator output on `cd94213`-based source: `records=351/351; verified=0/351; OCD-ID populated=0/351; status=review_required`. Zero records are source-verified today.
 
 ## Release and artifact strategy
 
