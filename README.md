@@ -1,5 +1,8 @@
 # CivicPatch
 
+
+> **For technical reviewers:** [Source-linked capability evidence, executable checks and current limitations](docs/PORTFOLIO_READINESS.md) · [prioritized remediation issue](https://github.com/onnxscibroccoli/civicpatch/issues/30). This is an experimental/software evidence portfolio, not an attestation of production operation or employment history.
+
 **Make local civic problems visible, understandable, and easier to act on.**
 
 CivicPatch is an open-source civic participation concept that helps people identify a local issue, understand which public body may be responsible, find trustworthy public information, and take a constructive next step. Start in Massachusetts, build a reliable state-wide foundation, then expand across the United States and beyond.
